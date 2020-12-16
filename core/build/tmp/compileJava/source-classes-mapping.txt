@@ -2,8 +2,10 @@ net/network/ConnectionListener.java
  net.network.ConnectionListener
 starter/ServerStarter.java
  starter.ServerStarter
-clientUI/AddRoomController.java
- clientUI.AddRoomController
+net/client/TCPClient.java
+ net.client.TCPClient
+ net.client.TCPClient$1
+ net.client.TCPClient$TCPReceiverMessage
 net/client/GameClient.java
  net.client.GameClient
 starter/Protocol.java
@@ -40,8 +42,8 @@ com/mygdx/game/units/BotTank.java
  com.mygdx.game.units.BotTank
 starter/ClientStarter.java
  starter.ClientStarter
-clientUI/MainController.java
- clientUI.MainController
+net/network/message/ConnectMessage.java
+ net.network.message.ConnectMessage
 net/network/connection/AbstractConnection.java
  net.network.connection.AbstractConnection
 com/mygdx/game/utils/Direction.java
@@ -64,11 +66,11 @@ com/mygdx/game/TankGame.java
  com.mygdx.game.TankGame
 com/mygdx/game/Weapon.java
  com.mygdx.game.Weapon
-net/network/message/ConnectMessage.java
- net.network.message.ConnectMessage
-net/client/TCPClient.java
- net.client.TCPClient
- net.client.TCPClient$1
- net.client.TCPClient$TCPReceiverMessage
+clientUI/AddRoomController.java
+ clientUI.AddRoomController
+clientUI/listeners/RoomsListener.java
+ clientUI.listeners.RoomsListener
+clientUI/MainController.java
+ clientUI.MainController
 clientUI/RoomsController.java
  clientUI.RoomsController

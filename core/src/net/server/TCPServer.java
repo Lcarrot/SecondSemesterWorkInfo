@@ -16,13 +16,13 @@ public abstract class TCPServer extends Server<TCPConnection, TCPMessage> {
     private CloseConnectionMessage closeConnectionMessage;
     private ConnectMessage connectMessage;
     private Set<Room> gameRoomSet;
-    private int next_id;
+    private int next_conn_id = 0;
+    private int next_room_id = 0;
     private TCPReceiverMessage receiverMessage;
 
     public TCPServer(int port, int threadPoolSize) {
         super(port);
         executor = (ThreadPoolExecutor) Executors.newFixedThreadPool(threadPoolSize);
-        next_id = 0;
         receiverMessage = new TCPReceiverMessage();
         connectMessage = new ConnectMessage();
         closeConnectionMessage = new CloseConnectionMessage();
@@ -45,7 +45,7 @@ public abstract class TCPServer extends Server<TCPConnection, TCPMessage> {
     @Override
     public void openConnection(TCPConnection connection) {
         connections.add(connection);
-        connectMessage.setId(next_id++);
+        connectMessage.setId(next_conn_id++);
         connection.send(connectMessage);
         executor.execute(connection);
     }
@@ -75,7 +75,7 @@ public abstract class TCPServer extends Server<TCPConnection, TCPMessage> {
                 }
             }
             if (message instanceof CreateRoomMessage) {
-                gameRoomSet.add(new Room((CreateRoomMessage) message));
+                gameRoomSet.add(new Room(next_room_id++,(CreateRoomMessage) message));
             }
             if (message instanceof ChatMessage) {
                 for (TCPConnection connection : connections) {

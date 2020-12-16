@@ -1,2 +1,2 @@
-com/mygdx/game/desktop/DesktopLauncher.java
- com.mygdx.game.desktop.DesktopLauncher
+executor/desktop/DesktopLauncher.java
+ executor.desktop.DesktopLauncher

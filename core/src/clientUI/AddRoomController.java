@@ -19,8 +19,6 @@ public class AddRoomController {
     @FXML
     private TextField name;
     @FXML
-    private PasswordField passwordField;
-    @FXML
     private TextField countUsers;
 
     public void init(Application parent, Stage stage) throws IOException {

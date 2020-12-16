@@ -10,6 +10,7 @@ import javafx.scene.image.Image;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 import javafx.stage.Stage;
+import net.client.TCPClient;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -22,11 +23,10 @@ public class MainController extends Application {
     private static Stage stage;
     MediaPlayer mediaPlayer;
 
-
     @Override
     public void start(Stage primaryStage) throws IOException {
         stage = primaryStage;
-        stage.setTitle("Hello world");
+        stage.setTitle("Anime tanks forever");
         stage.setWidth(1200);
         stage.setHeight(700);
 
@@ -36,7 +36,7 @@ public class MainController extends Application {
         Parent root = loader.load();
 
         stage.setScene(new Scene(root));
-        stage.setMinHeight(600);
+        stage.setMinHeight(650);
         stage.setMinWidth(1000);
 
         if ((mediaPlayer == null)) {
