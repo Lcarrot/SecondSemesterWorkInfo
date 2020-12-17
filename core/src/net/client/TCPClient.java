@@ -1,23 +1,20 @@
 package net.client;
 
-import clientUI.RoomsController;
-import clientUI.listeners.RoomsListener;
+import controllers.ListRoomsController;
 import net.network.connection.TCPConnection;
 import net.network.message.*;
 import net.network.message.SystemMessage.CloseConnectionMessage;
 import net.network.message.SystemMessage.ConnectMessage;
 import net.network.message.UIMessage.ChatMessage;
 import net.network.message.UIMessage.UpdateListRoomMessage;
-import net.server.Room;
 
-import java.io.Serializable;
 import java.net.Socket;
 
 public class TCPClient extends AbstractTCPClient {
 
     private TCPConnection connection;
     private GameClient gameClient;
-    private RoomsController roomsController;
+    private ListRoomsController listRoomsController;
     private ChatClient chatClient;
     private final TCPReceiverMessage tcpReceiverMessage;
     private UpdateListRoomMessage updateListRoomMessage;
