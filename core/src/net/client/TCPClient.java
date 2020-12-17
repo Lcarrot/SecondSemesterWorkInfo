@@ -1,20 +1,20 @@
 package net.client;
 
-import net.network.connection.Sender;
+import clientUI.listeners.RoomsListener;
 import net.network.connection.TCPConnection;
-import net.network.message.ChatMessage;
-import net.network.message.CloseConnectionMessage;
-import net.network.message.ConnectMessage;
-import net.network.message.TCPMessage;
+import net.network.message.*;
+import net.server.Room;
 
+import java.io.Serializable;
 import java.net.Socket;
 
-public class TCPClient extends AbstractTCPClient implements Sender<TCPMessage> {
+public class TCPClient extends AbstractTCPClient implements RoomsListener {
 
     private TCPConnection connection;
     private GameClient gameClient;
     private ChatClient chatClient;
     private final TCPReceiverMessage tcpReceiverMessage;
+    private UpdateListRoomMessage updateListRoomMessage;
 
     public TCPClient(Socket socket) {
         openConnection(new TCPConnection(socket, this));
@@ -40,7 +40,6 @@ public class TCPClient extends AbstractTCPClient implements Sender<TCPMessage> {
 
     }
 
-    @Override
     public void send(TCPMessage message) {
         connection.send(message);
     }
@@ -50,8 +49,33 @@ public class TCPClient extends AbstractTCPClient implements Sender<TCPMessage> {
         tcpReceiverMessage.handleMessage(message);
     }
 
-    private void setChatClient(int id) {
+    private void setId(int id) {
         this.chatClient = new ChatClient(this, id);
+        updateListRoomMessage = new UpdateListRoomMessage(id);
+    }
+
+    @Override
+    public void clickRoom() {
+
+    }
+
+    @Override
+    public <T extends Serializable> void inputMessage(T object) {
+        chatClient.sendMessage(object);
+    }
+
+    @Override
+    public Room[] updateRooms() {
+        updateListRoomMessage.clear();
+        send(updateListRoomMessage);
+        while (!updateListRoomMessage.getStatus()) {
+            try {
+                Thread.sleep(200);
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
+        }
+        return updateListRoomMessage.getRooms();
     }
 
     private class TCPReceiverMessage {
@@ -65,7 +89,10 @@ public class TCPClient extends AbstractTCPClient implements Sender<TCPMessage> {
             }
             if (message instanceof ConnectMessage) {
                 connection.setId(((ConnectMessage) message).getId());
-                setChatClient(((ConnectMessage) message).getId());
+                setId(((ConnectMessage) message).getId());
+            }
+            if (message instanceof UpdateListRoomMessage) {
+                updateListRoomMessage = (UpdateListRoomMessage) message;
             }
         }
     }

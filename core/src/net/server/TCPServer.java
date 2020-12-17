@@ -10,11 +10,12 @@ import java.util.Set;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ThreadPoolExecutor;
 
-public abstract class TCPServer extends Server<TCPConnection, TCPMessage> {
+public class TCPServer extends Server<TCPConnection, TCPMessage> {
 
     private final ThreadPoolExecutor executor;
     private CloseConnectionMessage closeConnectionMessage;
     private ConnectMessage connectMessage;
+    private UpdateListRoomMessage updateListRoomMessage;
     private Set<Room> gameRoomSet;
     private int next_conn_id = 0;
     private int next_room_id = 0;
@@ -59,6 +60,11 @@ public abstract class TCPServer extends Server<TCPConnection, TCPMessage> {
     }
 
     @Override
+    public void connectException(TCPConnection connection, Exception exception) {
+
+    }
+
+    @Override
     public void receive(TCPMessage msg) {
         receiverMessage.handleMessage(msg);
     }
@@ -80,6 +86,14 @@ public abstract class TCPServer extends Server<TCPConnection, TCPMessage> {
             if (message instanceof ChatMessage) {
                 for (TCPConnection connection : connections) {
                     connection.send(message);
+                }
+            }
+            if (message instanceof UpdateListRoomMessage) {
+                ((UpdateListRoomMessage) message).setRooms(gameRoomSet.size(), gameRoomSet);
+                for (TCPConnection connection: connections) {
+                    if (connection.getId() == ((UpdateListRoomMessage) message).getId()) {
+                        connection.send(message);
+                    }
                 }
             }
         }

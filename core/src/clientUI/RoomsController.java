@@ -1,8 +1,10 @@
 package clientUI;
 
-import clientUI.listeners.RoomsListener;
 import javafx.application.Application;
+import javafx.beans.InvalidationListener;
 import javafx.collections.FXCollections;
+import javafx.collections.ListChangeListener;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -14,27 +16,32 @@ import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import net.client.TCPClient;
-import net.network.message.ChatMessage;
+import net.network.message.UpdateListRoomMessage;
 import net.server.Room;
 
 import java.io.IOException;
-import java.util.Random;
-import java.util.Set;
+import java.util.*;
 
-public class RoomsController implements RoomsListener {
+public class RoomsController {
 
     private Application parent;
+
     private static Stage stage;
     @FXML
     Button buttonInputMessage;
     @FXML
     Button buttonUpdate;
     @FXML
-    ListView listRoom;
+    ListView<String> listRoom;
     @FXML
     TextArea chatField;
     @FXML
     TextField inputText;
+    private UpdateListRoomMessage updateListRoomMessage;
+
+    private List<Room> listObjectRoom;
+
+    private TCPClient client;
 
     public void init(Application parent, Stage stage) throws IOException {
         this.parent = parent;
@@ -49,30 +56,26 @@ public class RoomsController implements RoomsListener {
         stage.setScene(new Scene(root));
     }
 
-
-    // TODO: 12/17/2020 обновление списка комнат. обращаться к списку комнат listRoom
-    @Override
-    public void updateListRoom(Set<Room> rooms) {
-
+    public void setClient(TCPClient client) {
+        this.client = client;
     }
 
-    // TODO: 12/17/2020 нажатие на одну из комнат.
-    @Override
     public void clickRoom() {
 
     }
 
-    // TODO: 12/17/2020 отправление сообщение. подтягивать текст с inputText
-    @Override
     public void inputMessage() {
-        String message = inputText.getText();
+        client.inputMessage(inputText.getText());
+        inputText.setText("");
     }
 
-
-    // TODO: 12/17/2020 обновление чата. Обращаться к элементу chatField
-    @Override
-    public void updateChat() {
-        
+    public void updateRooms() {
+        listObjectRoom.addAll(Arrays.asList(client.updateRooms()));
+        String[] names = new String[listObjectRoom.size()];
+        int i = 0;
+        for (Room room : listObjectRoom) {
+            names[i++] = room.getName();
+        }
+        listRoom.setItems(FXCollections.observableList(Arrays.asList(names)));
     }
-
 }

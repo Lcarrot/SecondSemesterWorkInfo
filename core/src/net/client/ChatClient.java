@@ -3,7 +3,9 @@ package net.client;
 import net.network.connection.Sender;
 import net.network.message.ChatMessage;
 
-public class ChatClient implements Sender<ChatMessage> {
+import java.io.Serializable;
+
+public class ChatClient {
 
     // TODO: 12/14/2020 добавить считывание из поля и отправка сообщения по нажатию
     private final TCPClient tcpClient;
@@ -14,8 +16,8 @@ public class ChatClient implements Sender<ChatMessage> {
         message = new ChatMessage(id);
     }
 
-    @Override
-    public void send(ChatMessage message) {
+    public <T extends Serializable> void sendMessage(T obj) {
+        message.setMessage(obj);
         tcpClient.send(message);
     }
 

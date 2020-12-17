@@ -3,9 +3,10 @@ package net.server;
 import net.network.connection.TCPConnection;
 import net.network.message.CreateRoomMessage;
 
+import java.io.Serializable;
 import java.util.List;
 
-public class Room {
+public class Room implements Serializable {
 
     private int roomId;
     private String name;
@@ -25,6 +26,10 @@ public class Room {
         this.name = message.getName();
         this.hostId = message.getHostId();
         this.count = message.getCount();
+    }
+
+    public String getName() {
+        return name;
     }
 
     public void connect(TCPConnection connection) {

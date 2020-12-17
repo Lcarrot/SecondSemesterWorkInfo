@@ -5,7 +5,6 @@ import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import game.tanki.TankGame;
 import game.tanki.units.BotTank;
 
-
 public class BotEmitter {
     private BotTank[] bots;
 

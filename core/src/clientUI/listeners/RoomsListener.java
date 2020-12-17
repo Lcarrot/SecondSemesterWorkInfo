@@ -1,14 +1,12 @@
 package clientUI.listeners;
 
 import net.network.message.ChatMessage;
-import net.network.message.TCPMessage;
 import net.server.Room;
 
-import java.util.Set;
+import java.io.Serializable;
 
 public interface RoomsListener {
-    void updateListRoom(Set<Room> rooms);
     void clickRoom();
-    void inputMessage();
-    void updateChat();
+    <T extends Serializable> void inputMessage(T object);
+    Room[] updateRooms();
 }
