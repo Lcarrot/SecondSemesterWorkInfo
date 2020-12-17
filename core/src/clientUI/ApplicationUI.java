@@ -17,8 +17,11 @@ import javafx.util.Duration;
 import net.client.TCPClient;
 import net.network.message.UIMessage.ChatMessage;
 import net.server.Room;
+import net.starter.Protocol;
 
 import java.io.IOException;
+import java.net.InetAddress;
+import java.net.Socket;
 import java.util.List;
 
 public class ApplicationUI extends Application implements ClientApplication {
@@ -27,7 +30,7 @@ public class ApplicationUI extends Application implements ClientApplication {
     private ListRoomsController listRoomsController;
     private AddRoomController addRoomController;
     private static MediaPlayer mediaPlayer;
-    TCPClient tcpClient;
+    private TCPClient tcpClient;
 
     @Override
     public void start(Stage primaryStage) throws Exception {
@@ -43,6 +46,8 @@ public class ApplicationUI extends Application implements ClientApplication {
             mediaPlayer.setAutoPlay(true);
             mediaPlayer.setCycleCount(-1);
         }
+
+        tcpClient = new TCPClient(new Socket(InetAddress.getLocalHost(), Protocol.PORT));
 
         setScene(ScenesNames.START);
         stage.show();

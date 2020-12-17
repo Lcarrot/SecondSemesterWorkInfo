@@ -21,6 +21,6 @@ public class ChatClient {
     }
 
     public void setMessage(ChatMessage message) {
-
+        
     }
 }

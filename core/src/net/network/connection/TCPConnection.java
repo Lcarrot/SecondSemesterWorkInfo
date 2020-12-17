@@ -3,23 +3,20 @@ package net.network.connection;
 import net.network.ConnectionListener;
 import net.network.message.TCPMessage;
 
-import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
+import java.io.*;
 import java.net.Socket;
 
 public class TCPConnection extends AbstractConnection<TCPMessage, TCPConnection> implements Runnable, Sender<TCPMessage> {
 
-    private ObjectInputStream in;
-    private ObjectOutputStream out;
+    private InputStream in;
+    private OutputStream out;
     private int id;
 
     public TCPConnection(Socket socket, ConnectionListener<TCPConnection, TCPMessage> listener) {
         this.listener = listener;
         try {
-            System.out.println("1.1");
-            out = new ObjectOutputStream(socket.getOutputStream());
-            in = new ObjectInputStream(socket.getInputStream());
+            out = socket.getOutputStream();
+            in = socket.getInputStream();
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -37,8 +34,10 @@ public class TCPConnection extends AbstractConnection<TCPMessage, TCPConnection>
     @Override
     public void send(TCPMessage message) {
         try {
-            out.writeObject(message);
-            out.flush();
+            ObjectOutputStream outputStream = new ObjectOutputStream(out);
+            System.out.println("I'm working right now");
+            outputStream.writeObject(message);
+            outputStream.flush();
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -48,8 +47,11 @@ public class TCPConnection extends AbstractConnection<TCPMessage, TCPConnection>
     public void run() {
         while (isAlive) {
             try {
+                System.out.println("i'm working" + id);
                 if (in.available() != 0) {
-                    listener.receive((TCPMessage) in.readObject());
+                    System.out.println("I'm here?");
+                    ObjectInputStream inputStream = new ObjectInputStream(in);
+                    listener.receive((TCPMessage) inputStream.readObject());
                 }
                 else {
                     Thread.sleep(200);

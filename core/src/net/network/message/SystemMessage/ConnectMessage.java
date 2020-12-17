@@ -6,9 +6,6 @@ public class ConnectMessage implements TCPMessage {
 
     private int id;
 
-    public ConnectMessage() {
-    }
-
     public int getId() {
         return id;
     }

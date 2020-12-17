@@ -14,10 +14,10 @@ public class TCPClient extends AbstractTCPClient {
 
     private TCPConnection connection;
     private GameClient gameClient;
-    private ListRoomsController listRoomsController;
     private ChatClient chatClient;
     private final TCPReceiverMessage tcpReceiverMessage;
     private UpdateListRoomMessage updateListRoomMessage;
+    private Thread connectionThread;
 
     public TCPClient(Socket socket) {
         tcpReceiverMessage = new TCPReceiverMessage();
@@ -28,6 +28,9 @@ public class TCPClient extends AbstractTCPClient {
     @Override
     public void openConnection(TCPConnection connection) {
         this.connection = connection;
+        connectionThread = new Thread(connection);
+        connectionThread.start();
+        System.out.println("Connection was added");
     }
 
     @Override
@@ -37,6 +40,8 @@ public class TCPClient extends AbstractTCPClient {
         connection.send(closeConnectionMessage);
         connection.close();
     }
+
+
 
     @Override
     public void connectException(TCPConnection connection, Exception exception) {

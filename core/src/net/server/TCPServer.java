@@ -42,7 +42,10 @@ public class TCPServer extends Server<TCPConnection, TCPMessage> {
             ServerSocket serverSocket = new ServerSocket(port);
             while (isActive) {
                 Socket socket = serverSocket.accept();
-                openConnection(new TCPConnection(socket, this));
+                TCPConnection connection = new TCPConnection(socket, this);
+                executor.execute(connection);
+                openConnection(connection);
+                connection.send(connectMessage);
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -54,6 +57,7 @@ public class TCPServer extends Server<TCPConnection, TCPMessage> {
         connections.add(connection);
         connectMessage.setId(next_conn_id++);
         executor.execute(connection);
+        connection.setId(next_conn_id);
         connection.send(connectMessage);
         System.out.println("connection was added" + next_conn_id);
     }
