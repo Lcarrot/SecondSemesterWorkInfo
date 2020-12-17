@@ -2,10 +2,16 @@ package net.server;
 
 import net.network.connection.TCPConnection;
 import net.network.message.*;
+import net.network.message.SystemMessage.CloseConnectionMessage;
+import net.network.message.SystemMessage.ConnectMessage;
+import net.network.message.UIMessage.ChatMessage;
+import net.network.message.UIMessage.CreateRoomMessage;
+import net.network.message.UIMessage.UpdateListRoomMessage;
 
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.LinkedHashSet;
 import java.util.Set;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ThreadPoolExecutor;
@@ -15,7 +21,6 @@ public class TCPServer extends Server<TCPConnection, TCPMessage> {
     private final ThreadPoolExecutor executor;
     private CloseConnectionMessage closeConnectionMessage;
     private ConnectMessage connectMessage;
-    private UpdateListRoomMessage updateListRoomMessage;
     private Set<Room> gameRoomSet;
     private int next_conn_id = 0;
     private int next_room_id = 0;
@@ -27,6 +32,7 @@ public class TCPServer extends Server<TCPConnection, TCPMessage> {
         receiverMessage = new TCPReceiverMessage();
         connectMessage = new ConnectMessage();
         closeConnectionMessage = new CloseConnectionMessage();
+        gameRoomSet = new LinkedHashSet<>();
     }
 
     @Override
@@ -47,8 +53,9 @@ public class TCPServer extends Server<TCPConnection, TCPMessage> {
     public void openConnection(TCPConnection connection) {
         connections.add(connection);
         connectMessage.setId(next_conn_id++);
-        connection.send(connectMessage);
         executor.execute(connection);
+        connection.send(connectMessage);
+        System.out.println("connection was added" + next_conn_id);
     }
 
     @Override

@@ -1,25 +1,31 @@
 package net.client;
 
+import clientUI.RoomsController;
 import clientUI.listeners.RoomsListener;
 import net.network.connection.TCPConnection;
 import net.network.message.*;
+import net.network.message.SystemMessage.CloseConnectionMessage;
+import net.network.message.SystemMessage.ConnectMessage;
+import net.network.message.UIMessage.ChatMessage;
+import net.network.message.UIMessage.UpdateListRoomMessage;
 import net.server.Room;
 
 import java.io.Serializable;
 import java.net.Socket;
 
-public class TCPClient extends AbstractTCPClient implements RoomsListener {
+public class TCPClient extends AbstractTCPClient {
 
     private TCPConnection connection;
     private GameClient gameClient;
+    private RoomsController roomsController;
     private ChatClient chatClient;
     private final TCPReceiverMessage tcpReceiverMessage;
     private UpdateListRoomMessage updateListRoomMessage;
 
     public TCPClient(Socket socket) {
+        tcpReceiverMessage = new TCPReceiverMessage();
         openConnection(new TCPConnection(socket, this));
         gameClient = new GameClient(this);
-        tcpReceiverMessage = new TCPReceiverMessage();
     }
 
     @Override
@@ -40,6 +46,10 @@ public class TCPClient extends AbstractTCPClient implements RoomsListener {
 
     }
 
+    public ChatClient getChatClient() {
+        return chatClient;
+    }
+
     public void send(TCPMessage message) {
         connection.send(message);
     }
@@ -52,30 +62,6 @@ public class TCPClient extends AbstractTCPClient implements RoomsListener {
     private void setId(int id) {
         this.chatClient = new ChatClient(this, id);
         updateListRoomMessage = new UpdateListRoomMessage(id);
-    }
-
-    @Override
-    public void clickRoom() {
-
-    }
-
-    @Override
-    public <T extends Serializable> void inputMessage(T object) {
-        chatClient.sendMessage(object);
-    }
-
-    @Override
-    public Room[] updateRooms() {
-        updateListRoomMessage.clear();
-        send(updateListRoomMessage);
-        while (!updateListRoomMessage.getStatus()) {
-            try {
-                Thread.sleep(200);
-            } catch (InterruptedException e) {
-                throw new RuntimeException(e);
-            }
-        }
-        return updateListRoomMessage.getRooms();
     }
 
     private class TCPReceiverMessage {

@@ -1,2 +1,2 @@
-executor/desktop/DesktopLauncher.java
- executor.desktop.DesktopLauncher
+game/DesktopLauncher.java
+ game.DesktopLauncher

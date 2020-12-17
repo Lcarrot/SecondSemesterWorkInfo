@@ -1,10 +1,8 @@
 package clientUI;
 
+import clientUI.listeners.RoomsListener;
 import javafx.application.Application;
-import javafx.beans.InvalidationListener;
 import javafx.collections.FXCollections;
-import javafx.collections.ListChangeListener;
-import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -15,14 +13,15 @@ import javafx.scene.control.ListView;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
+import net.client.ChatClient;
 import net.client.TCPClient;
-import net.network.message.UpdateListRoomMessage;
 import net.server.Room;
 
 import java.io.IOException;
+import java.io.Serializable;
 import java.util.*;
 
-public class RoomsController {
+public class RoomsController implements RoomsListener {
 
     private Application parent;
 
@@ -37,15 +36,15 @@ public class RoomsController {
     TextArea chatField;
     @FXML
     TextField inputText;
-    private UpdateListRoomMessage updateListRoomMessage;
+
+    ChatClient client;
 
     private List<Room> listObjectRoom;
 
-    private TCPClient client;
-
-    public void init(Application parent, Stage stage) throws IOException {
+    public void init(Application parent, Stage stage, TCPClient client) throws IOException {
         this.parent = parent;
         this.stage = stage;
+        this.client = client.getChatClient();
         listRoom.setItems(FXCollections.observableArrayList("Java", "JavaScript", "C#", "Python"));
     }
 
@@ -56,26 +55,19 @@ public class RoomsController {
         stage.setScene(new Scene(root));
     }
 
-    public void setClient(TCPClient client) {
-        this.client = client;
-    }
-
+    @Override
     public void clickRoom() {
 
     }
 
+    @Override
     public void inputMessage() {
-        client.inputMessage(inputText.getText());
+        client.sendMessage(inputText.getText());
         inputText.setText("");
     }
 
+    @Override
     public void updateRooms() {
-        listObjectRoom.addAll(Arrays.asList(client.updateRooms()));
-        String[] names = new String[listObjectRoom.size()];
-        int i = 0;
-        for (Room room : listObjectRoom) {
-            names[i++] = room.getName();
-        }
-        listRoom.setItems(FXCollections.observableList(Arrays.asList(names)));
+
     }
 }

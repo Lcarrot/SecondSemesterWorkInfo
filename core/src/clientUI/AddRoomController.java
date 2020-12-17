@@ -8,14 +8,12 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
-import net.client.TCPClient;
 
 import java.io.IOException;
 
 public class AddRoomController {
     private Application parent;
-    private static Stage stage;
-    private TCPClient client;
+    private static Stage stage;;
 
     @FXML
     private TextField name;
@@ -49,9 +47,5 @@ public class AddRoomController {
     @FXML
     private void addRoom(ActionEvent event) {
 
-    }
-
-    public void setClient(TCPClient client) {
-        this.client = client;
     }
 }

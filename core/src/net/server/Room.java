@@ -1,7 +1,7 @@
 package net.server;
 
 import net.network.connection.TCPConnection;
-import net.network.message.CreateRoomMessage;
+import net.network.message.UIMessage.CreateRoomMessage;
 
 import java.io.Serializable;
 import java.util.List;

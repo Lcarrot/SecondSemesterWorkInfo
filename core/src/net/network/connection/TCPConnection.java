@@ -17,8 +17,9 @@ public class TCPConnection extends AbstractConnection<TCPMessage, TCPConnection>
     public TCPConnection(Socket socket, ConnectionListener<TCPConnection, TCPMessage> listener) {
         this.listener = listener;
         try {
-            in = new ObjectInputStream(socket.getInputStream());
+            System.out.println("1.1");
             out = new ObjectOutputStream(socket.getOutputStream());
+            in = new ObjectInputStream(socket.getInputStream());
         } catch (IOException e) {
             e.printStackTrace();
         }

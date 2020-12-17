@@ -1,7 +1,6 @@
 package net.client;
 
-import net.network.connection.Sender;
-import net.network.message.ChatMessage;
+import net.network.message.UIMessage.ChatMessage;
 
 import java.io.Serializable;
 
