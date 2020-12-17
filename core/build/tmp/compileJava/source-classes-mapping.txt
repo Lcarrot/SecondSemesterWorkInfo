@@ -6,76 +6,74 @@ net/network/message/UIMessage/CreateRoomMessage.java
  net.network.message.UIMessage.CreateRoomMessage
 game/tanki/Weapon.java
  game.tanki.Weapon
-net/network/message/UIMessage/UpdateListRoomMessage.java
- net.network.message.UIMessage.UpdateListRoomMessage
-net/network/message/SystemMessage/CloseConnectionMessage.java
- net.network.message.SystemMessage.CloseConnectionMessage
-net/starter/ClientStarter.java
- net.starter.ClientStarter
-net/client/AbstractTCPClient.java
- net.client.AbstractTCPClient
+net/client/GameClient.java
+ net.client.GameClient
+net/server/Room.java
+ net.server.Room
+clientUI/ApplicationUI.java
+ clientUI.ApplicationUI
+ clientUI.ApplicationUI$1
 game/tanki/units/BotTank.java
  game.tanki.units.BotTank
 game/tanki/emitters/BulletEmitter.java
  game.tanki.emitters.BulletEmitter
 net/network/connection/Connection.java
  net.network.connection.Connection
-game/tanki/TankGame.java
- game.tanki.TankGame
+controllers/StartController.java
+ controllers.StartController
 game/tanki/emitters/BotEmitter.java
  game.tanki.emitters.BotEmitter
-net/network/message/SystemMessage/ConnectMessage.java
- net.network.message.SystemMessage.ConnectMessage
-game/tanki/units/PlayerTank.java
- game.tanki.units.PlayerTank
-game/tanki/utils/Direction.java
- game.tanki.utils.Direction
+clientUI/ClientApplication.java
+ clientUI.ClientApplication
+controllers/ListRoomsController.java
+ controllers.ListRoomsController
+controllers/AddRoomController.java
+ controllers.AddRoomController
 net/network/message/TCPMessage.java
  net.network.message.TCPMessage
 net/network/connection/Sender.java
  net.network.connection.Sender
-controllers/ScenesNames.java
- controllers.ScenesNames
+net/network/connection/TCPConnection.java
+ net.network.connection.TCPConnection
 game/tanki/units/Tank.java
  game.tanki.units.Tank
 game/tanki/utils/TankOwner.java
  game.tanki.utils.TankOwner
-net/server/Server.java
- net.server.Server
-net/network/connection/Receiver.java
- net.network.connection.Receiver
+net/server/TCPServer.java
+ net.server.TCPServer
+ net.server.TCPServer$1
+ net.server.TCPServer$TCPReceiverMessage
+net/starter/ServerStarter.java
+ net.starter.ServerStarter
 net/starter/Protocol.java
  net.starter.Protocol
 game/tanki/Bullet.java
  game.tanki.Bullet
 net/network/connection/AbstractConnection.java
  net.network.connection.AbstractConnection
-net/starter/ServerStarter.java
- net.starter.ServerStarter
+net/network/connection/Receiver.java
+ net.network.connection.Receiver
+controllers/ScenesNames.java
+ controllers.ScenesNames
 net/client/ChatClient.java
  net.client.ChatClient
-net/network/connection/TCPConnection.java
- net.network.connection.TCPConnection
-net/client/GameClient.java
- net.client.GameClient
-net/server/TCPServer.java
- net.server.TCPServer
- net.server.TCPServer$1
- net.server.TCPServer$TCPReceiverMessage
-controllers/StartController.java
- controllers.StartController
+net/server/Server.java
+ net.server.Server
+game/tanki/utils/Direction.java
+ game.tanki.utils.Direction
+net/client/AbstractTCPClient.java
+ net.client.AbstractTCPClient
 net/client/TCPClient.java
  net.client.TCPClient
  net.client.TCPClient$1
  net.client.TCPClient$TCPReceiverMessage
-net/server/Room.java
- net.server.Room
-clientUI/ClientApplication.java
- clientUI.ClientApplication
-controllers/ListRoomsController.java
- controllers.ListRoomsController
-clientUI/ApplicationUI.java
- clientUI.ApplicationUI
- clientUI.ApplicationUI$1
-controllers/AddRoomController.java
- controllers.AddRoomController
+game/tanki/units/PlayerTank.java
+ game.tanki.units.PlayerTank
+game/tanki/TankGame.java
+ game.tanki.TankGame
+net/network/message/SystemMessage/ConnectMessage.java
+ net.network.message.SystemMessage.ConnectMessage
+net/network/message/UIMessage/UpdateListRoomMessage.java
+ net.network.message.UIMessage.UpdateListRoomMessage
+net/network/message/SystemMessage/CloseConnectionMessage.java
+ net.network.message.SystemMessage.CloseConnectionMessage

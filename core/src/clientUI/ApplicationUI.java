@@ -47,7 +47,7 @@ public class ApplicationUI extends Application implements ClientApplication {
             mediaPlayer.setCycleCount(-1);
         }
 
-        tcpClient = new TCPClient(new Socket(InetAddress.getLocalHost(), Protocol.PORT));
+        tcpClient = new TCPClient(new Socket(InetAddress.getLocalHost(), Protocol.PORT), this);
 
         setScene(ScenesNames.START);
         stage.show();

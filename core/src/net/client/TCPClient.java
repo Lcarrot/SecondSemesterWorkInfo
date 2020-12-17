@@ -1,5 +1,6 @@
 package net.client;
 
+import clientUI.ApplicationUI;
 import controllers.ListRoomsController;
 import net.network.connection.TCPConnection;
 import net.network.message.*;
@@ -18,11 +19,13 @@ public class TCPClient extends AbstractTCPClient {
     private final TCPReceiverMessage tcpReceiverMessage;
     private UpdateListRoomMessage updateListRoomMessage;
     private Thread connectionThread;
+    private ApplicationUI applicationUI;
 
-    public TCPClient(Socket socket) {
+    public TCPClient(Socket socket, ApplicationUI applicationUI) {
         tcpReceiverMessage = new TCPReceiverMessage();
         openConnection(new TCPConnection(socket, this));
         gameClient = new GameClient(this);
+        this.applicationUI = applicationUI;
     }
 
     @Override
@@ -40,8 +43,6 @@ public class TCPClient extends AbstractTCPClient {
         connection.send(closeConnectionMessage);
         connection.close();
     }
-
-
 
     @Override
     public void connectException(TCPConnection connection, Exception exception) {
@@ -62,7 +63,7 @@ public class TCPClient extends AbstractTCPClient {
     }
 
     private void setId(int id) {
-        this.chatClient = new ChatClient(this, id);
+        this.chatClient = new ChatClient(this, id, applicationUI);
         updateListRoomMessage = new UpdateListRoomMessage(id);
     }
 
