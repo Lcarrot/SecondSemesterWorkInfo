@@ -1,37 +1,30 @@
 package net.network.message.UIMessage;
 
 import net.network.message.TCPMessage;
-import net.server.Room;
+import clientUI.RoomInfo;
 
-import java.util.Set;
+import java.util.Collection;
+import java.util.List;
 
-public class UpdateListRoomMessage implements TCPMessage {
+public class UpdateListRoomMessage extends TCPMessage<Collection<RoomInfo>> {
 
-    private Room[] rooms;
-    private final int id;
+    private List<RoomInfo> rooms;
+    private int id;
 
     public UpdateListRoomMessage(int id) {
         this.id = id;
     }
 
-    public void setRooms(int counts, Set<Room> roomSet) {
-        rooms = roomSet.toArray(new Room[counts]);
+    public void setRooms(List<RoomInfo> roomSet) {
+        rooms = roomSet;
     }
 
     public void clear() {
         rooms = null;
     }
-
-    public Room[] getRooms() {
+    @Override
+    public List<RoomInfo> getContent() {
         return rooms;
-    }
-
-    public String[] getNamesRooms() {
-        String[] names = new String[rooms.length];
-        for (int i = 0; i < rooms.length; i++) {
-            names[i] = rooms[i].getName();
-        }
-        return names;
     }
 
     public int getId() {
@@ -40,5 +33,13 @@ public class UpdateListRoomMessage implements TCPMessage {
 
     public boolean getStatus() {
         return rooms == null;
+    }
+
+    @Override
+    public String toString() {
+        return "UpdateListRoomMessage{" +
+                "rooms=" + rooms +
+                ", id=" + id +
+                '}';
     }
 }

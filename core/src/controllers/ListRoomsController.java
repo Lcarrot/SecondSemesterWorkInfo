@@ -9,9 +9,10 @@ import javafx.scene.control.ListView;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
-import net.client.ChatClient;
-import net.network.message.UIMessage.ChatMessage;
-import net.server.Room;
+import net.client.controllers.ChatStringController;
+import net.network.message.UIMessage.ChatStringMessage;
+import net.server.room.Room;
+import clientUI.RoomInfo;
 
 import java.util.*;
 
@@ -25,13 +26,13 @@ public class ListRoomsController {
     @FXML
     Button buttonUpdateListRooms;
     @FXML
-    ListView<Room> listRoom;
+    ListView<RoomInfo> listRoom;
     @FXML
     TextArea textAreaMessages;
     @FXML
     TextField textFieldMessage;
 
-    ChatClient client;
+    ChatStringController client;
 
     private List<Room> listObjectRoom;
 
@@ -44,20 +45,20 @@ public class ListRoomsController {
     @FXML
     private void sendMessage(ActionEvent event) throws Exception{
         parent.animationButton(buttonInputMessage);
-        ChatMessage chatMessage = new ChatMessage(1);
-        parent.sendMessage(chatMessage);
+        parent.sendMessage(textFieldMessage.getText());
+        textFieldMessage.setText("");
     }
 
 
     // вызов требования обновления комнат
-    public void updateListRooms(List<Room> rooms){
+    public void updateListRooms(List<RoomInfo> rooms){
         if (rooms != null) {
             listRoom.setItems(FXCollections.observableList(rooms));
         }
     }
 
-    public void receivedMessage(ChatMessage chatMessage){
-        textAreaMessages.appendText(chatMessage.toString());
+    public void receivedMessage(ChatStringMessage chatStringMessage){
+        textAreaMessages.appendText(chatStringMessage.toString() + "\n");
     }
 
     public void setParent(ApplicationUI parent) {

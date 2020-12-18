@@ -1,34 +1,42 @@
 package net.network.message.UIMessage;
 
 import net.network.message.TCPMessage;
+import clientUI.RoomInfo;
 
-public class CreateRoomMessage implements TCPMessage {
+public class CreateRoomMessage extends TCPMessage<RoomInfo> {
 
-    private final String name;
-    private final String password;
-    private final int count;
-    private final int hostId;
+    private final int id;
+    private final RoomInfo roomInfo;
+    private boolean created = false;
 
-    public CreateRoomMessage(String name, String password, int count, int hostId) {
-        this.name = name;
-        this.password = password;
-        this.count = count;
-        this.hostId = hostId;
+    public CreateRoomMessage(int id, RoomInfo roomInfo) {
+        this.id = id;
+        this.roomInfo = roomInfo;
     }
 
-    public String getName() {
-        return name;
+    public int getId() {
+        return id;
     }
 
-    public String getPassword() {
-        return password;
+    public boolean isCreated() {
+        return created;
     }
 
-    public int getCount() {
-        return count;
+    public void setCreated(boolean created) {
+        this.created = created;
     }
 
-    public int getHostId() {
-        return hostId;
+    @Override
+    public RoomInfo getContent() {
+        return roomInfo;
+    }
+
+    @Override
+    public String toString() {
+        return "CreateRoomMessage{" +
+                "id=" + id +
+                ", roomInfo=" + roomInfo +
+                ", created=" + created +
+                '}';
     }
 }

@@ -6,36 +6,59 @@ import net.network.message.TCPMessage;
 import java.io.*;
 import java.net.Socket;
 
-public class TCPConnection extends AbstractConnection<TCPMessage, TCPConnection> implements Runnable, Sender<TCPMessage> {
+public class TCPConnection extends AbstractConnection<TCPMessage, TCPConnection> implements Runnable,Sender<TCPMessage> {
 
     private InputStream in;
     private OutputStream out;
+    private Socket socket;
     private int id;
 
     public TCPConnection(Socket socket, ConnectionListener<TCPConnection, TCPMessage> listener) {
         this.listener = listener;
+        this.socket = socket;
         try {
             out = socket.getOutputStream();
             in = socket.getInputStream();
+            id = receiveId();
         } catch (IOException e) {
             e.printStackTrace();
         }
         isAlive = true;
     }
 
+    public TCPConnection(Socket socket, ConnectionListener<TCPConnection, TCPMessage> listener, int id) {
+        this.socket = socket;
+        this.listener = listener;
+        try {
+            out = socket.getOutputStream();
+            in = socket.getInputStream();
+            this.id = id;
+            sendId(id);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        isAlive = true;
+    }
+
+    private void sendId(int id) throws IOException {
+        DataOutputStream dataOutputStream= new DataOutputStream(out);
+        dataOutputStream.writeInt(id);
+    }
+
     public int getId() {
         return id;
     }
 
-    public void setId(int id) {
-        this.id = id;
+    private int receiveId() throws IOException {
+        DataInputStream dataInputStream = new DataInputStream(in);
+        return dataInputStream.readInt();
     }
 
     @Override
     public void send(TCPMessage message) {
         try {
+            System.out.println(message.toString());
             ObjectOutputStream outputStream = new ObjectOutputStream(out);
-            System.out.println("I'm working right now");
             outputStream.writeObject(message);
             outputStream.flush();
         } catch (IOException e) {
@@ -44,20 +67,30 @@ public class TCPConnection extends AbstractConnection<TCPMessage, TCPConnection>
     }
 
     @Override
+    public void close() {
+        super.close();
+        try {
+            socket.close();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Override
     public void run() {
         while (isAlive) {
             try {
-                System.out.println("i'm working" + id);
                 if (in.available() != 0) {
-                    System.out.println("I'm here?");
                     ObjectInputStream inputStream = new ObjectInputStream(in);
-                    listener.receive((TCPMessage) inputStream.readObject());
+                    TCPMessage message = (TCPMessage) inputStream.readObject();
+                    System.out.println(message.toString());
+                    listener.receive(message);
                 }
                 else {
                     Thread.sleep(200);
                 }
-            } catch(IOException | InterruptedException | ClassNotFoundException e){
-                e.printStackTrace();
+            } catch(IOException | InterruptedException | ClassNotFoundException ex){
+                throw new RuntimeException(ex);
             }
         }
     }

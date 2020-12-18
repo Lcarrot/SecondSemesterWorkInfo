@@ -14,9 +14,8 @@ import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 import javafx.stage.Stage;
 import javafx.util.Duration;
-import net.client.TCPClient;
-import net.network.message.UIMessage.ChatMessage;
-import net.server.Room;
+import net.client.GameTCPClient;
+import net.network.message.UIMessage.ChatStringMessage;
 import net.starter.Protocol;
 
 import java.io.IOException;
@@ -30,7 +29,7 @@ public class ApplicationUI extends Application implements ClientApplication {
     private ListRoomsController listRoomsController;
     private AddRoomController addRoomController;
     private static MediaPlayer mediaPlayer;
-    private TCPClient tcpClient;
+    private GameTCPClient tcpClient;
 
     @Override
     public void start(Stage primaryStage) throws Exception {
@@ -47,7 +46,7 @@ public class ApplicationUI extends Application implements ClientApplication {
             mediaPlayer.setCycleCount(-1);
         }
 
-        tcpClient = new TCPClient(new Socket(InetAddress.getLocalHost(), Protocol.PORT), this);
+        tcpClient = new GameTCPClient(new Socket(InetAddress.getLocalHost(), Protocol.PORT), this);
 
         setScene(ScenesNames.START);
         stage.show();
@@ -55,24 +54,23 @@ public class ApplicationUI extends Application implements ClientApplication {
 
 
     @Override
-    public void receivedMessage(ChatMessage chatMessage) {
-        listRoomsController.receivedMessage(chatMessage);
+    public void receivedMessage(ChatStringMessage chatStringMessage) {
+        listRoomsController.receivedMessage(chatStringMessage);
 
     }
 
     @Override
-    public void updateListRooms(List<Room> rooms) {
+    public void updateListRooms(List<RoomInfo> rooms) {
         listRoomsController.updateListRooms(rooms);
     }
 
     @Override
-    public void sendMessage(ChatMessage message) {
-        tcpClient.getChatClient().setMessage(message);
+    public void sendMessage(String message) {
+        tcpClient.getChatController().send(message);
     }
 
-
     @Override
-    public void addRoom(Room room) {
+    public void addRoom(RoomInfo room) {
         //add room
     }
 

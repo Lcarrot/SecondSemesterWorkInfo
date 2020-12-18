@@ -2,6 +2,7 @@ package net.network.message;
 
 import java.io.Serializable;
 
-public interface TCPMessage extends Serializable {
+public abstract class TCPMessage<T> implements Serializable {
 
+    public abstract T getContent();
 }

@@ -1,15 +1,15 @@
 package clientUI;
 
 import controllers.ScenesNames;
-import net.network.message.UIMessage.ChatMessage;
-import net.server.Room;
+import net.network.message.UIMessage.ChatStringMessage;
+import net.server.room.Room;
 
 import java.util.List;
 
 public interface ClientApplication {
     void setScene(ScenesNames scene);
-    void updateListRooms(List<Room> rooms);
-    void receivedMessage(ChatMessage chatMessage);
-    void sendMessage(ChatMessage message);
-    void addRoom(Room room);
+    void updateListRooms(List<RoomInfo> rooms);
+    void receivedMessage(ChatStringMessage chatStringMessage);
+    void sendMessage(String message);
+    void addRoom(RoomInfo room);
 }

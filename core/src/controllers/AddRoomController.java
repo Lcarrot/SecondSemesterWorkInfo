@@ -1,11 +1,12 @@
 package controllers;
 
 import clientUI.ApplicationUI;
+import clientUI.RoomInfo;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
-import net.server.Room;
+import net.server.room.Room;
 
 public class AddRoomController {
     private ApplicationUI parent;
@@ -15,7 +16,7 @@ public class AddRoomController {
     private TextField textFieldName;
     @FXML
     private TextField textFieldQuantity;
-    private Room room;
+    private RoomInfo room;
 
 
 
@@ -26,13 +27,14 @@ public class AddRoomController {
 
     @FXML
     private void addRoom(ActionEvent event) {
-        Room room = new Room(1, textFieldName.getText(), 2, 1);
+//        RoomInfo info = new RoomInfo(1, "hi", 1, 5);
+//        Room room = new Room(info);
         parent.addRoom(room);
     }
 
 
 
-    public void setRoom(Room room) {
+    public void setRoom(RoomInfo room) {
         this.room = room;
     }
 
