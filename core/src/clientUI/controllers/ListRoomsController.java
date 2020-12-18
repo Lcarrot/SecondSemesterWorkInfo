@@ -1,4 +1,4 @@
-package controllers;
+package clientUI.controllers;
 
 import clientUI.ApplicationUI;
 import javafx.collections.FXCollections;
@@ -45,20 +45,27 @@ public class ListRoomsController {
     @FXML
     private void sendMessage(ActionEvent event) throws Exception{
         parent.animationButton(buttonInputMessage);
-        parent.sendMessage(textFieldMessage.getText());
+        String message = textFieldMessage.getText();
+        if (!(message.equals(""))) {
+            parent.sendMessage(textFieldMessage.getText());
+        }
         textFieldMessage.setText("");
     }
 
 
-    // вызов требования обновления комнат
-    public void updateListRooms(List<RoomInfo> rooms){
+    @FXML
+    private void updateListRooms(ActionEvent event){
+        receivedUpdateListRooms(null);
+    }
+
+    public void receivedUpdateListRooms(List<RoomInfo> rooms){
         if (rooms != null) {
             listRoom.setItems(FXCollections.observableList(rooms));
         }
     }
 
     public void receivedMessage(ChatStringMessage chatStringMessage){
-        textAreaMessages.appendText(chatStringMessage.toString() + "\n");
+        textAreaMessages.appendText("User " +chatStringMessage.getId() + ": " + chatStringMessage.getContent() + "\n");
     }
 
     public void setParent(ApplicationUI parent) {

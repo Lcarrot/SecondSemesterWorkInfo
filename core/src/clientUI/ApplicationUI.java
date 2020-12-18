@@ -1,9 +1,9 @@
 package clientUI;
 
-import controllers.AddRoomController;
-import controllers.ListRoomsController;
-import controllers.ScenesNames;
-import controllers.StartController;
+import clientUI.controllers.AddRoomController;
+import clientUI.controllers.ListRoomsController;
+import clientUI.controllers.ScenesNames;
+import clientUI.controllers.StartController;
 import javafx.animation.RotateTransition;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
@@ -56,12 +56,11 @@ public class ApplicationUI extends Application implements ClientApplication {
     @Override
     public void receivedMessage(ChatStringMessage chatStringMessage) {
         listRoomsController.receivedMessage(chatStringMessage);
-
     }
 
     @Override
-    public void updateListRooms(List<RoomInfo> rooms) {
-        listRoomsController.updateListRooms(rooms);
+    public void receivedUpdateListRooms(List<RoomInfo> roomInfos) {
+        listRoomsController.receivedUpdateListRooms(roomInfos);
     }
 
     @Override
@@ -71,7 +70,12 @@ public class ApplicationUI extends Application implements ClientApplication {
 
     @Override
     public void addRoom(RoomInfo room) {
-        //add room
+
+    }
+
+    @Override
+    public void updateListRooms() {
+        tcpClient.getListRoomController().send(true);
     }
 
     public void closeApplication(){

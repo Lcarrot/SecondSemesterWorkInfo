@@ -1,4 +1,4 @@
-package controllers;
+package clientUI.controllers;
 
 import clientUI.ApplicationUI;
 import clientUI.RoomInfo;
@@ -6,7 +6,6 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
-import net.server.room.Room;
 
 public class AddRoomController {
     private ApplicationUI parent;

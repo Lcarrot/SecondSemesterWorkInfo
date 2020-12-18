@@ -1,4 +1,4 @@
-package controllers;
+package clientUI.controllers;
 
 import clientUI.ApplicationUI;
 import javafx.event.ActionEvent;

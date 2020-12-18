@@ -1,4 +1,4 @@
-package controllers;
+package clientUI.controllers;
 
 public enum ScenesNames {
     START("/formFX/Start.fxml"),

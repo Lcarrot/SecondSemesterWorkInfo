@@ -9,12 +9,12 @@
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.FlowPane?>
 
-<FlowPane alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" orientation="VERTICAL" prefHeight="597.0" prefWidth="934.0" style="-fx-background-color:linear-gradient(#a40106, #00d4ff);" stylesheets="@../css/designSaber.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.ListRoomsController">
+<FlowPane alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" orientation="VERTICAL" prefHeight="597.0" prefWidth="934.0" style="-fx-background-color:linear-gradient(#a40106, #00d4ff);" stylesheets="@../css/designSaber.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="clientUI.controllers.ListRoomsController">
    <children>
       <FlowPane alignment="CENTER_LEFT" hgap="20.0" prefHeight="479.0" prefWidth="477.0" vgap="20.0">
          <children>
             <Button mnemonicParsing="false" onAction="#back" prefHeight="40.0" prefWidth="80" text="Назад" />
-            <Button fx:id="buttonUpdateListRooms" mnemonicParsing="false" prefHeight="40.0" prefWidth="100" text="Обновить" />
+            <Button fx:id="buttonUpdateListRooms" onAction="#updateListRooms" mnemonicParsing="false" prefHeight="40.0" prefWidth="100" text="Обновить" />
             <ListView fx:id="listRoom" prefHeight="471.0" prefWidth="434.0" />
          </children>
       </FlowPane>
@@ -25,7 +25,7 @@
                   <Image url="@../img/testAnim.gif" />
                </image>
             </ImageView>
-            <TextArea fx:id="textAreaMessages" disable="true" prefHeight="285.0" prefWidth="336.0" />
+            <TextArea fx:id="textAreaMessages" editable="false" prefHeight="285.0" prefWidth="336.0" />
             <FlowPane alignment="TOP_CENTER" hgap="10.0" prefHeight="106.0" prefWidth="338.0" prefWrapLength="200.0">
                <children>
                   <TextField fx:id="textFieldMessage" prefHeight="32.0" prefWidth="252.0" promptText="Ввести текст">

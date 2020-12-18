@@ -19,7 +19,7 @@ public class ListRoomController extends AbstractController<List<RoomInfo>, Boole
 
     @Override
     public void receive(List<RoomInfo> message) {
-        application.updateListRooms(message);
+        application.receivedUpdateListRooms(message);
     }
 
     @Override
