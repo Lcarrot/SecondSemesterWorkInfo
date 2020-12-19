@@ -65,12 +65,6 @@ public class ApplicationUI extends Application implements ClientApplication {
         stage.hide();
     }
 
-    public void closeGame(){
-        setScene(ScenesNames.START);
-        stage.show();
-    }
-
-
     @Override
     public void receivedMessage(ChatMessage chatMessage) {
         listRoomsController.receivedMessage(chatMessage);
@@ -139,10 +133,6 @@ public class ApplicationUI extends Application implements ClientApplication {
         rotateTransition.play();
     }
 
-    public static void main(String[] args) {
-        Application.launch();
-    }
-
 
     @Override
     public void updateFrags(Integer id, Integer killsCount) {
@@ -166,6 +156,12 @@ public class ApplicationUI extends Application implements ClientApplication {
 
     @Override
     public void playerIsDisconnected(Integer id) {
-        // TODO: 12/19/2020 удалить игрока из таблицы
+        setScene(ScenesNames.START);
+        stage.show();
+        // TODO: 12/19/2020 удалить игрока из таблицы. Лёня добавит свою часть.
+    }
+
+    public static void main(String[] args) {
+        Application.launch();
     }
 }

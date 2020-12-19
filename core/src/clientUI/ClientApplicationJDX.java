@@ -5,7 +5,6 @@ import net.network.message.UIMessage.DisconnectFromRoomMessage;
 public interface ClientApplicationJDX {
 
     //4 метода для взаимодествия с игрой
-    void closeGame();
     void updateFrags(Integer id, Integer killsCount); // с сервера приходит сообщения о том, у кого обновились фраги и сколько их (сервер -> игра)
     void addKill(Integer integer); // игрок убил бота, необходимо добавить на сервер (игра -> сервер)
     void addPlayer(boolean status, RoomInfo roomInfo); //игрок присоединился, необходимо его отобразить (сервер -> игра)
