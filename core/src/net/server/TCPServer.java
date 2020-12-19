@@ -81,6 +81,7 @@ public class TCPServer extends Server<TCPConnection, TCPMessage> {
                 gameRoomSet.add(room);
                 getConnectionById(((CreateRoomMessage) message).getClientId()).ifPresent(connection -> {
                     ((CreateRoomMessage) message).setCreated(room.connect(connection));
+                    ((CreateRoomMessage) message).setRoomInfo(room.getRoomInfo());
                     connection.send(message);
                 });
             }
@@ -104,8 +105,7 @@ public class TCPServer extends Server<TCPConnection, TCPMessage> {
                         (room -> getConnectionById(((ConnectToRoomMessage) message).getClientId()).ifPresent
                                 (connection -> {
                                     ((ConnectToRoomMessage) message).setStatus(room.connect(connection));
-                                    ((ConnectToRoomMessage) message).setOtherPlayers(room.getConnections().stream()
-                                            .map(TCPConnection::getId).collect(Collectors.toList()));
+                                    ((ConnectToRoomMessage) message).setRoomInfo(room.getRoomInfo());
                                     connection.send(message);
                                 }));
             }

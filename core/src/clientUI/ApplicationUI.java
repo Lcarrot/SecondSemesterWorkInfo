@@ -63,25 +63,20 @@ public class ApplicationUI extends Application implements ClientApplication {
         stage.show();
     }
 
-    public void startGame(){
-        HashMap hashMap = new HashMap();
-        hashMap.put(tcpClient.getId(), 0);
-        game = new TankGame(this, hashMap);
-        new LwjglApplication(game, config);
-        stage.hide();
+
+    public void joinGame(Boolean booleanJoin, RoomInfo roomInfo){
+        if (booleanJoin) {
+            game = new TankGame(this, roomInfo);
+            new LwjglApplication(game, config);
+            stage.hide();
+        }
+        else {
+            // TODO: 12/19/2020 выдать какое то сообщение.
+        }
     }
 
-
-    // TODO: 19.12.2020 вызывается при вступлении в игру tcpclient'ом 
-    public void joinGame(RoomInfo roomInfo){
-        game = new TankGame(this, roomInfo.getMapUsers());
-        new LwjglApplication(game, config);
-        stage.hide();
-    }
-
-    // TODO: 19.12.2020 вызывается метод у tcpclient на запрос вступления в комнату 
     public void requestGame(RoomInfo roomInfo){
-
+        tcpClient.connectToRoom(roomInfo);
     }
 
     public GameTCPClient getTcpClient() {
@@ -184,7 +179,7 @@ public class ApplicationUI extends Application implements ClientApplication {
     public void playerIsDisconnected(Integer id) {
         setScene(ScenesNames.START);
         stage.show();
-        // TODO: 12/19/2020 удалить игрока из таблицы. Лёня добавит свою часть.
+        // TODO: 12/19/2020 удалить игрока из таблицы. (должна вывзывать функцию у игрока сервер -> игрок)
     }
 
     @Override

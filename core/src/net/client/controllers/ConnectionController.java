@@ -15,4 +15,8 @@ public interface ConnectionController {
     <T extends Serializable> void  sendChatMessage(T obj);
 
     void setNewRoom(RoomInfo roomInfo);
+
+    void connectToRoom(RoomInfo roomInfo);
+
+    void disconnectFromRoom(RoomInfo roomInfo);
 }

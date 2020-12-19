@@ -39,6 +39,7 @@ public class Room {
     public boolean connect(TCPConnection connection) {
         if (connections.size() < roomInfo.getCount()) {
             connections.add(connection);
+            roomInfo.addUser(connection.getId(), 0);
             return true;
         }
         return false;

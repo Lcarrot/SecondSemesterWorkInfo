@@ -1,6 +1,8 @@
 package clientUI;
 
 import java.io.Serializable;
+import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 
 public class RoomInfo implements Serializable {
@@ -9,16 +11,14 @@ public class RoomInfo implements Serializable {
     private final int hostId;
     private final int count;
     private int roomId;
-    private Map mapUsers;
+    private final Map<Integer, Integer> mapUsers;
 
-    public RoomInfo(String name, int hostId, int count, Map mapUsers) {
+    public RoomInfo(String name, int hostId, int count) {
         this.name = name;
         this.hostId = hostId;
         this.count = count;
-        this.mapUsers = mapUsers;
+        mapUsers = new LinkedHashMap<>();
     }
-
-
 
     public int getRoomId() {
         return roomId;
@@ -39,8 +39,16 @@ public class RoomInfo implements Serializable {
         this.roomId = roomId;
     }
 
-    public Map getMapUsers() {
+    public Map<Integer, Integer> getMapUsers() {
         return mapUsers;
+    }
+
+    public boolean addUser(Integer id, Integer kills) {
+        if (mapUsers.size() < count) {
+            mapUsers.put(id, kills);
+            return true;
+        }
+        return false;
     }
 
     @Override

@@ -84,6 +84,16 @@ public class GameTCPClient extends TCPClient {
     }
 
     @Override
+    public void connectToRoom(RoomInfo roomInfo) {
+        connectToRoomController.send(roomInfo);
+    }
+
+    @Override
+    public void disconnectFromRoom(RoomInfo roomInfo) {
+        disconnectFromRoomController.send(roomInfo);
+    }
+
+    @Override
     public void send(TCPMessage message) {
         connection.send(message);
     }

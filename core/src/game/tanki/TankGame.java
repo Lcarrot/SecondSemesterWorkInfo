@@ -1,6 +1,7 @@
 package game.tanki;
 
 import clientUI.ClientApplicationJDX;
+import clientUI.RoomInfo;
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
@@ -14,8 +15,6 @@ import game.tanki.units.BotTank;
 import game.tanki.units.PlayerTank;
 import game.tanki.units.Tank;
 
-import java.util.HashMap;
-import java.util.Map;
 
 public class TankGame extends ApplicationAdapter {
     private SpriteBatch batch;
@@ -24,14 +23,14 @@ public class TankGame extends ApplicationAdapter {
     private BotEmitter botEmitter;
     private float gameTimer;
     private ClientApplicationJDX application;
-    private Map mapUsers;
+    private RoomInfo roomInfo;
     private static final boolean FRIENDLY_FIRE = false;
     public TankGame(){}
 
 
-    public TankGame(ClientApplicationJDX application, Map mapUsers) {
+    public TankGame(ClientApplicationJDX application, RoomInfo roomInfo) {
         this.application = application;
-        this.mapUsers = mapUsers;
+        this.roomInfo = roomInfo;
     }
 
     public PlayerTank getPlayer() {

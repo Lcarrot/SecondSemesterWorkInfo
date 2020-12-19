@@ -8,7 +8,6 @@ import net.network.message.UIMessage.DoFragMessage;
 public class RoomMessageController extends AbstractMessageController<DoFragMessage, Integer> {
 
     private final DoFragMessage message;
-    private RoomInfo roomInfo;
 
     public RoomMessageController(TCPClient client, ClientApplication clientApplication) {
         super(client, clientApplication);
@@ -16,7 +15,6 @@ public class RoomMessageController extends AbstractMessageController<DoFragMessa
     }
 
     public void setRoom(RoomInfo info) {
-        roomInfo = info;
         message.setRoomId(info.getRoomId());
     }
 

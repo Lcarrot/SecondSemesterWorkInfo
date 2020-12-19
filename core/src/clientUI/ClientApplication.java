@@ -1,7 +1,5 @@
 package clientUI;
 
 public interface ClientApplication extends ClientApplicationFX, ClientApplicationJDX {
-    void joinGame(RoomInfo roomInfo);
-    void startGame();
-
+    void joinGame(Boolean status, RoomInfo roomInfo);
 }

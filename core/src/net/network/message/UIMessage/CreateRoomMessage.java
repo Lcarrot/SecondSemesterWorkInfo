@@ -6,7 +6,7 @@ import clientUI.RoomInfo;
 public class CreateRoomMessage extends TCPMessage<RoomInfo> {
 
     private final int clientId;
-    private final RoomInfo roomInfo;
+    private RoomInfo roomInfo;
     private boolean created = false;
 
     public CreateRoomMessage(int clientId, RoomInfo roomInfo) {
@@ -28,6 +28,10 @@ public class CreateRoomMessage extends TCPMessage<RoomInfo> {
 
     public RoomInfo getRoomInfo() {
         return roomInfo;
+    }
+
+    public void setRoomInfo(RoomInfo roomInfo) {
+        this.roomInfo = roomInfo;
     }
 
     @Override

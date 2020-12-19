@@ -27,12 +27,9 @@ public class AddRoomController {
 
     @FXML
     private void addRoom(ActionEvent event) {
-        HashMap hashMap = new HashMap();
-        hashMap.put(parent.getTcpClient().getId(), 0);
         room = new RoomInfo(textFieldName.getText(), parent.getTcpClient().getId(),
-                Integer.parseInt (textFieldQuantity.getText()), hashMap);
+                Integer.parseInt (textFieldQuantity.getText()));
         parent.addRoom(room);
-        parent.startGame();
     }
 
     public void setRoom(RoomInfo room) {
