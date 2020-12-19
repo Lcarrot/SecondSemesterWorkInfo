@@ -1,9 +1,7 @@
 package clientUI;
 
-import clientUI.controllers.AddRoomController;
-import clientUI.controllers.ListRoomsController;
-import clientUI.controllers.ScenesNames;
-import clientUI.controllers.StartController;
+import clientUI.controllers.*;
+import game.tanki.TankGame;
 import javafx.animation.RotateTransition;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
@@ -16,6 +14,8 @@ import javafx.stage.Stage;
 import javafx.util.Duration;
 import net.client.GameTCPClient;
 import net.network.message.UIMessage.ChatStringMessage;
+import net.network.message.UIMessage.ConnectToRoomMessage;
+import net.network.message.UIMessage.DoFragMessage;
 import net.starter.Protocol;
 
 import java.io.IOException;
@@ -30,6 +30,7 @@ public class ApplicationUI extends Application implements ClientApplication {
     private AddRoomController addRoomController;
     private static MediaPlayer mediaPlayer;
     private GameTCPClient tcpClient;
+    private TankGame game;
 
     @Override
     public void start(Stage primaryStage) throws Exception {
@@ -80,6 +81,7 @@ public class ApplicationUI extends Application implements ClientApplication {
 
     public void closeApplication(){
         stage.close();
+        tcpClient.close();
     }
 
 
@@ -124,4 +126,23 @@ public class ApplicationUI extends Application implements ClientApplication {
         Application.launch();
     }
 
+    @Override
+    public void updateFrags(DoFragMessage message) {
+        // TODO: 12/19/2020 вызывается обновление фрагов game. что то там
+    }
+
+    @Override
+    public void addKill(Integer integer) {
+        tcpClient.getRoomController().send(integer);
+    }
+
+    @Override
+    public void addPlayer(ConnectToRoomMessage message) {
+        if (message.isStatus()) {
+            // TODO: 12/19/2020   добавить игрока в табличку и начать отслеживать фраги
+        }
+        else {
+            // TODO: 12/19/2020 вывести окошко с текстом, что такое невозможно
+        }
+    }
 }

@@ -21,7 +21,7 @@ public class TCPConnection extends AbstractConnection<TCPMessage, TCPConnection>
             in = socket.getInputStream();
             id = receiveId();
         } catch (IOException e) {
-            e.printStackTrace();
+            listener.connectException(this, e);
         }
         isAlive = true;
     }
@@ -35,7 +35,7 @@ public class TCPConnection extends AbstractConnection<TCPMessage, TCPConnection>
             this.id = id;
             sendId(id);
         } catch (IOException e) {
-            e.printStackTrace();
+            listener.connectException(this, e);
         }
         isAlive = true;
     }
@@ -57,7 +57,6 @@ public class TCPConnection extends AbstractConnection<TCPMessage, TCPConnection>
     @Override
     public void send(TCPMessage message) {
         try {
-            System.out.println(message.toString());
             ObjectOutputStream outputStream = new ObjectOutputStream(out);
             outputStream.writeObject(message);
             outputStream.flush();
@@ -67,24 +66,26 @@ public class TCPConnection extends AbstractConnection<TCPMessage, TCPConnection>
     }
 
     @Override
+    public boolean isAlive() {
+        return !socket.isClosed();
+    }
+
+    @Override
     public void close() {
-        super.close();
         try {
             socket.close();
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            listener.connectException(this, e);
         }
     }
 
     @Override
     public void run() {
-        while (isAlive) {
+        while (!socket.isClosed()) {
             try {
                 if (in.available() != 0) {
                     ObjectInputStream inputStream = new ObjectInputStream(in);
-                    TCPMessage message = (TCPMessage) inputStream.readObject();
-                    System.out.println(message.toString());
-                    listener.receive(message);
+                    listener.receive((TCPMessage) inputStream.readObject());
                 }
                 else {
                     Thread.sleep(200);

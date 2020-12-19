@@ -5,17 +5,17 @@ import clientUI.RoomInfo;
 
 public class CreateRoomMessage extends TCPMessage<RoomInfo> {
 
-    private final int id;
+    private final int clientId;
     private final RoomInfo roomInfo;
     private boolean created = false;
 
-    public CreateRoomMessage(int id, RoomInfo roomInfo) {
-        this.id = id;
+    public CreateRoomMessage(int clientId, RoomInfo roomInfo) {
+        this.clientId = clientId;
         this.roomInfo = roomInfo;
     }
 
-    public int getId() {
-        return id;
+    public int getClientId() {
+        return clientId;
     }
 
     public boolean isCreated() {
@@ -26,15 +26,14 @@ public class CreateRoomMessage extends TCPMessage<RoomInfo> {
         this.created = created;
     }
 
-    @Override
-    public RoomInfo getContent() {
+    public RoomInfo getRoomInfo() {
         return roomInfo;
     }
 
     @Override
     public String toString() {
         return "CreateRoomMessage{" +
-                "id=" + id +
+                "id=" + clientId +
                 ", roomInfo=" + roomInfo +
                 ", created=" + created +
                 '}';

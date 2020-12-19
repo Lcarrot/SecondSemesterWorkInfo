@@ -65,7 +65,7 @@ public class ListRoomsController {
     }
 
     public void receivedMessage(ChatStringMessage chatStringMessage){
-        textAreaMessages.appendText("User " +chatStringMessage.getId() + ": " + chatStringMessage.getContent() + "\n");
+        textAreaMessages.appendText("User " +chatStringMessage.getClientId() + ": " + chatStringMessage.getMessage() + "\n");
     }
 
     public void setParent(ApplicationUI parent) {

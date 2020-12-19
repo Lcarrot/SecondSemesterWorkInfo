@@ -9,18 +9,22 @@ import net.network.message.UIMessage.DoFragMessage;
 public class RoomController implements Receiver<DoFragMessage>, Sender<Integer> {
 
     private final TCPClient client;
-    private ClientApplication clientApplication;
+    private final ClientApplication clientApplication;
     private final DoFragMessage message;
 
-    public RoomController(TCPClient client, int roomId, ClientApplication clientApplication) {
+    public RoomController(TCPClient client, ClientApplication clientApplication) {
         this.client = client;
-        message = new DoFragMessage(client.getId(), roomId);
+        message = new DoFragMessage(client.getId());
         this.clientApplication = clientApplication;
+    }
+
+    public void setRoomId(Integer id) {
+        message.setRoomId(id);
     }
 
     @Override
     public void receive(DoFragMessage message) {
-        // TODO: 12/18/2020 сделать вывод фрагов
+        clientApplication.updateFrags(message);
     }
 
     @Override
@@ -28,5 +32,4 @@ public class RoomController implements Receiver<DoFragMessage>, Sender<Integer> 
         message.setKills(integer);
         client.send(message);
     }
-
 }

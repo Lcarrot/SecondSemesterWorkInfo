@@ -9,10 +9,10 @@ import java.util.List;
 public class UpdateListRoomMessage extends TCPMessage<Collection<RoomInfo>> {
 
     private List<RoomInfo> rooms;
-    private int id;
+    private int clientId;
 
-    public UpdateListRoomMessage(int id) {
-        this.id = id;
+    public UpdateListRoomMessage(int clientId) {
+        this.clientId = clientId;
     }
 
     public void setRooms(List<RoomInfo> roomSet) {
@@ -22,13 +22,13 @@ public class UpdateListRoomMessage extends TCPMessage<Collection<RoomInfo>> {
     public void clear() {
         rooms = null;
     }
-    @Override
-    public List<RoomInfo> getContent() {
+
+    public List<RoomInfo> getRooms() {
         return rooms;
     }
 
-    public int getId() {
-        return id;
+    public int getClientId() {
+        return clientId;
     }
 
     public boolean getStatus() {
@@ -39,7 +39,7 @@ public class UpdateListRoomMessage extends TCPMessage<Collection<RoomInfo>> {
     public String toString() {
         return "UpdateListRoomMessage{" +
                 "rooms=" + rooms +
-                ", id=" + id +
+                ", id=" + clientId +
                 '}';
     }
 }

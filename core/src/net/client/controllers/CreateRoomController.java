@@ -5,16 +5,17 @@ import clientUI.RoomInfo;
 import net.client.TCPClient;
 import net.network.message.UIMessage.CreateRoomMessage;
 
-public class CreateRoomController extends AbstractController<Boolean, RoomInfo>{
+public class CreateRoomController extends AbstractController<CreateRoomMessage, RoomInfo>{
 
     public CreateRoomController(TCPClient client, ClientApplication application) {
         super(client, application);
     }
 
     @Override
-    public void receive(Boolean booleanValue) {
-        if (booleanValue) {
-            // TODO: 12/18/2020 начать игру
+    public void receive(CreateRoomMessage message) {
+        if (message.isCreated()) {
+            client.getRoomController().setRoomId(message.getRoomInfo().getRoomId());
+            // TODO: 12/19/2020 открывать игру
         }
     }
 

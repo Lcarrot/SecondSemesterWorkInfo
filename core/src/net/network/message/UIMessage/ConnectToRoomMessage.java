@@ -5,22 +5,21 @@ import clientUI.RoomInfo;
 
 public class ConnectToRoomMessage extends TCPMessage<RoomInfo> {
 
-    private final int id;
+    private final int clientId;
     private final RoomInfo roomInfo;
     private boolean status = false;
 
-    public ConnectToRoomMessage(int id, RoomInfo roomInfo) {
+    public ConnectToRoomMessage(int clientId, RoomInfo roomInfo) {
         this.roomInfo = roomInfo;
-        this.id = id;
+        this.clientId = clientId;
     }
 
-    @Override
-    public RoomInfo getContent() {
+    public RoomInfo getRoomInfo() {
         return roomInfo;
     }
 
-    public int getId() {
-        return id;
+    public int getClientId() {
+        return clientId;
     }
 
     public void setStatus(boolean status) {
@@ -34,7 +33,7 @@ public class ConnectToRoomMessage extends TCPMessage<RoomInfo> {
     @Override
     public String toString() {
         return "ConnectToRoomMessage{" +
-                "id=" + id +
+                "id=" + clientId +
                 ", roomInfo=" + roomInfo +
                 ", status=" + status +
                 '}';

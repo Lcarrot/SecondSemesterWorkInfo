@@ -5,7 +5,7 @@ import net.network.message.TCPMessage;
 public class DoFragMessage extends TCPMessage<Integer> {
 
     private final int id;
-    private final int roomId;
+    private int roomId;
     private int kills;
 
     public DoFragMessage(int id, int roomId) {
@@ -13,8 +13,11 @@ public class DoFragMessage extends TCPMessage<Integer> {
         this.roomId = roomId;
     }
 
-    @Override
-    public Integer getContent() {
+    public DoFragMessage(int id) {
+        this.id = id;
+    }
+
+    public int getKills() {
         return kills;
     }
 
@@ -28,6 +31,10 @@ public class DoFragMessage extends TCPMessage<Integer> {
 
     public int getRoomId() {
         return roomId;
+    }
+
+    public void setRoomId(int roomId) {
+        this.roomId = roomId;
     }
 
     @Override

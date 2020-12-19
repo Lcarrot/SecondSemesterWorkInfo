@@ -19,12 +19,13 @@ public abstract class TCPClient implements ConnectionListener<TCPConnection, TCP
     protected final CreateRoomController createRoomController;
     protected int id;
 
-    public TCPClient(Socket socket, ClientApplication applicationUI) {
+    public TCPClient(Socket socket, ClientApplication application) {
         openConnection(new TCPConnection(socket, this));
-        chatStringController = new ChatStringController(this, id, applicationUI);
-        listRoomController = new ListRoomController(this, applicationUI);
-        connectToRoomController = new ConnectToRoomController(this, applicationUI);
-        createRoomController = new CreateRoomController(this, applicationUI);
+        chatStringController = new ChatStringController(this, id, application);
+        listRoomController = new ListRoomController(this, application);
+        connectToRoomController = new ConnectToRoomController(this, application);
+        createRoomController = new CreateRoomController(this, application);
+        roomController = new RoomController(this, application);
     }
 
     public int getId() {

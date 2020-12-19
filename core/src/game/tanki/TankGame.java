@@ -1,6 +1,6 @@
 package game.tanki;
 
-import clientUI.ApplicationUI;
+import clientUI.ClientApplication;
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
@@ -13,21 +13,20 @@ import game.tanki.units.BotTank;
 import game.tanki.units.PlayerTank;
 import game.tanki.units.Tank;
 
-
 public class TankGame extends ApplicationAdapter {
     private SpriteBatch batch;
     private PlayerTank player;
     private BulletEmitter bulletEmitter;
     private BotEmitter botEmitter;
     private float gameTimer;
-    private ApplicationUI application;
+    private ClientApplication application;
 
     private static final boolean FRIENDLY_FIRE = false;
 
     public TankGame(){}
 
-    public TankGame(ApplicationUI applicationUI) {
-        this.application = applicationUI;
+    public TankGame(ClientApplication application) {
+        this.application = application;
     }
 
     public PlayerTank getPlayer() {

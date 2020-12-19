@@ -1,7 +1,6 @@
 package net.client.controllers;
 
 import clientUI.ClientApplication;
-import net.client.GameTCPClient;
 import net.client.TCPClient;
 import net.network.message.UIMessage.UpdateListRoomMessage;
 import clientUI.RoomInfo;

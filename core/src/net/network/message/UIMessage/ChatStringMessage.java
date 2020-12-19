@@ -4,37 +4,29 @@ import net.network.message.TCPMessage;
 
 public class ChatStringMessage extends TCPMessage<String> {
 
-    private int id;
+    private final int clientId;
     private String message;
 
-    public ChatStringMessage() {
+    public ChatStringMessage(int clientId) {
+        this.clientId = clientId;
     }
 
     public String getMessage() {
         return message;
     }
 
-    public ChatStringMessage(int id) {
-        this.id = id;
-    }
-
     public void setMessage(String message) {
         this.message = message;
     }
 
-    public int getId() {
-        return id;
-    }
-
-    @Override
-    public String getContent() {
-        return message;
+    public int getClientId() {
+        return clientId;
     }
 
     @Override
     public String toString() {
         return "ChatMessage{" +
-                "id=" + id +
+                "id=" + clientId +
                 ", message='" + message + '\'' +
                 '}';
     }

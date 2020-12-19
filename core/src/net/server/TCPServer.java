@@ -34,15 +34,17 @@ public class TCPServer extends Server<TCPConnection, TCPMessage> {
     @Override
     public void start() {
         super.start();
+        TCPConnection connection = null;
         try {
             ServerSocket serverSocket = new ServerSocket(port);
             while (isActive) {
                 Socket socket = serverSocket.accept();
-                TCPConnection connection = new TCPConnection(socket, this, next_conn_id++);
+                connection = new TCPConnection(socket, this, next_conn_id++);
                 openConnection(connection);
             }
         } catch (IOException e) {
-            e.printStackTrace();
+            assert connection != null;
+            connectException(connection, e);
         }
     }
 
@@ -50,19 +52,19 @@ public class TCPServer extends Server<TCPConnection, TCPMessage> {
     public void openConnection(TCPConnection connection) {
         connections.add(connection);
         executor.execute(connection);
-        System.out.println("connection was added" + next_conn_id);
+        System.out.println((connection.toString() + " was added"));
     }
 
     @Override
     public void closeConnection(TCPConnection connection) {
         connections.remove(connection);
-        connection.send(closeConnectionMessage);
         connection.close();
+        System.out.println((connection.toString() + "was closed"));
     }
 
     @Override
     public void connectException(TCPConnection connection, Exception exception) {
-
+        throw new RuntimeException(connection.toString() + "throw exception",exception);
     }
 
     @Override
@@ -74,44 +76,52 @@ public class TCPServer extends Server<TCPConnection, TCPMessage> {
 
         private void handleMessage(TCPMessage message) {
             if (message instanceof CloseConnectionMessage) {
-                connections.stream().filter(x -> x.getId() == ((CloseConnectionMessage) message).getId())
-                        .findFirst().ifPresent(connections::remove);
+                getConnectionById(((CloseConnectionMessage) message).getClientId()).ifPresent(TCPServer.this::closeConnection);
             } else if (message instanceof CreateRoomMessage) {
                 gameRoomSet.add(new Room(next_room_id++, (CreateRoomMessage) message));
-                connections.stream().filter(x -> x.getId() == ((CreateRoomMessage) message)
-                        .getContent().getHostId()).findFirst().ifPresent(x -> {
+                getConnectionById(((CreateRoomMessage) message).getClientId()).ifPresent(connection -> {
                     ((CreateRoomMessage) message).setCreated(true);
-                    x.send(message);
+                    connection.send(message);
                 });
             } else if (message instanceof ChatStringMessage) {
                 broadcastSendMessage(connections, message);
             } else if (message instanceof UpdateListRoomMessage) {
                 ((UpdateListRoomMessage) message).setRooms(gameRoomSet.stream().map(Room::getRoomInfo).collect(Collectors.toList()));
-                connections.stream().filter(x -> x.getId() == ((UpdateListRoomMessage) message).getId()).findFirst().ifPresent(connection -> {
-                    ((UpdateListRoomMessage) message).setRooms(gameRoomSet.stream().map(Room::getRoomInfo).collect(Collectors.toList()));
-                    connection.send(message);
-                });
+                getConnectionById(((UpdateListRoomMessage) message).getClientId()).ifPresent(
+                        connection -> {
+                            ((UpdateListRoomMessage) message).setRooms(gameRoomSet.stream().map(Room::getRoomInfo).collect(Collectors.toList()));
+                            connection.send(message);
+                        });
             } else if (message instanceof DoFragMessage) {
-                gameRoomSet.stream().filter(x -> x.getRoomId() == ((DoFragMessage) message).getId()).
-                        findAny().ifPresent(value -> broadcastSendMessage(value.getConnections(), message));
+                getRoomById(((DoFragMessage) message).getRoomId()).ifPresent(
+                        room -> broadcastSendMessage(room.getConnections(), message));
             } else if (message instanceof ConnectToRoomMessage) {
-                gameRoomSet.stream().filter(room -> room.getRoomId() == ((ConnectToRoomMessage) message).getContent()
-                        .getRoomId()).findFirst().ifPresent(room -> connections.stream().
-                        filter(connection -> connection.getId() == ((ConnectToRoomMessage) message).getId()).
-                        findFirst().ifPresent(connection -> {
-                    ((ConnectToRoomMessage) message).setStatus(room.connect(connection));
-                    connection.send(message);
-                }));
+                getRoomById(((ConnectToRoomMessage) message).getRoomInfo().getRoomId()).ifPresent
+                        (room -> getConnectionById(((ConnectToRoomMessage) message).getClientId()).ifPresent
+                                (connection -> {
+                                    ((ConnectToRoomMessage) message).setStatus(room.connect(connection));
+                                    connection.send(message);
+                                }));
             } else if (message instanceof DisconnectFromRoomMessage) {
-                gameRoomSet.stream().filter(room -> room.getRoomId() == ((DisconnectFromRoomMessage) message).getRoomInfo()
-                        .getRoomId()).findFirst().ifPresent(room -> connections.stream()
-                        .filter(connection -> connection.getId() == ((DisconnectFromRoomMessage) message).getContent())
-                        .findFirst().ifPresent(room::disconnect));
+                getRoomById(((DisconnectFromRoomMessage) message).getRoomInfo().getRoomId())
+                        .ifPresent(room -> getConnectionById(((DisconnectFromRoomMessage) message)
+                                .getClientId()).ifPresent(room::disconnect));
             }
         }
 
         private void broadcastSendMessage(Collection<TCPConnection> connections, TCPMessage message) {
             connections.forEach(x -> x.send(message));
+        }
+
+        private Optional<Room> getRoomById(int id) {
+            return gameRoomSet.stream()
+                    .filter(room -> room.getRoomId() == id).findAny();
+        }
+
+        private Optional<TCPConnection> getConnectionById(int id) {
+            return connections.stream()
+                    .filter(connection -> connection.getId() == (id))
+                    .findAny();
         }
     }
 }

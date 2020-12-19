@@ -5,11 +5,11 @@ import clientUI.RoomInfo;
 
 public class DisconnectFromRoomMessage extends TCPMessage<Integer> {
 
-    private final int id;
+    private final int clientId;
     private final RoomInfo roomInfo;
 
-    public DisconnectFromRoomMessage(int id, RoomInfo roomInfo) {
-        this.id = id;
+    public DisconnectFromRoomMessage(int clientId, RoomInfo roomInfo) {
+        this.clientId = clientId;
         this.roomInfo = roomInfo;
     }
 
@@ -17,15 +17,14 @@ public class DisconnectFromRoomMessage extends TCPMessage<Integer> {
         return roomInfo;
     }
 
-    @Override
-    public Integer getContent() {
-        return id;
+    public int getClientId() {
+        return clientId;
     }
 
     @Override
     public String toString() {
         return "DisconnectFromRoomMessage{" +
-                "id=" + id +
+                "id=" + clientId +
                 ", roomInfo=" + roomInfo +
                 '}';
     }

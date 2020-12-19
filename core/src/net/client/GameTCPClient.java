@@ -23,7 +23,7 @@ public class GameTCPClient extends TCPClient {
         id = connection.getId();
         Thread connectionThread = new Thread(connection);
         connectionThread.start();
-        System.out.println("Connection was added");
+        System.out.println((connection.toString() + "was added"));
     }
 
     public int getId() {
@@ -39,7 +39,7 @@ public class GameTCPClient extends TCPClient {
 
     @Override
     public void connectException(TCPConnection connection, Exception exception) {
-
+        throw new RuntimeException(exception.getMessage(), exception);
     }
 
     public void close() {
@@ -48,7 +48,7 @@ public class GameTCPClient extends TCPClient {
 
     @Override
     public void receive(TCPMessage message) {
-        System.out.println(message.toString());
+        System.out.println(("Catch message " + message.toString()));
         tcpReceiverMessage.handleMessage(message);
     }
 
@@ -61,9 +61,11 @@ public class GameTCPClient extends TCPClient {
         private void handleMessage(TCPMessage message) {
             if (message instanceof CloseConnectionMessage) { closeConnection(connection); }
             else if (message instanceof ChatStringMessage) { chatStringController.receive((ChatStringMessage) message); }
-            else if (message instanceof UpdateListRoomMessage) { listRoomController.receive(((UpdateListRoomMessage) message).getContent()); }
-            else if (message instanceof ConnectToRoomMessage) {connectToRoomController.receive(((ConnectToRoomMessage) message).isStatus());}
-            else if (message instanceof CreateRoomMessage) {createRoomController.receive(((CreateRoomMessage) message).isCreated());}
+            else if (message instanceof UpdateListRoomMessage) { listRoomController.receive(((UpdateListRoomMessage) message).getRooms()); }
+            else if (message instanceof ConnectToRoomMessage) {
+                connectToRoomController.receive(((ConnectToRoomMessage) message));
+            }
+            else if (message instanceof CreateRoomMessage) {createRoomController.receive(((CreateRoomMessage) message)); }
             else if (message instanceof DoFragMessage) {roomController.receive((DoFragMessage) message);}
         }
     }

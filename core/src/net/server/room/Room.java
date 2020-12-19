@@ -21,7 +21,7 @@ public class Room implements Serializable {
 
     public Room(int roomId, CreateRoomMessage message) {
         this.roomId = roomId;
-        roomInfo = message.getContent();
+        roomInfo = message.getRoomInfo();
     }
 
     public String getName() {
