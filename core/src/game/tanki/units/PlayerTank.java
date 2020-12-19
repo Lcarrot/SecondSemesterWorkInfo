@@ -2,6 +2,8 @@ package game.tanki.units;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.math.Circle;
 import com.badlogic.gdx.math.Vector2;
@@ -10,6 +12,7 @@ import game.tanki.Weapon;
 import game.tanki.utils.TankOwner;
 
 public class PlayerTank extends Tank {
+    int score;
     int lives;
 
     public PlayerTank(TankGame game, TextureAtlas atlas) {
@@ -25,7 +28,12 @@ public class PlayerTank extends Tank {
         this.hpMax = 10;
         this.hp = this.hpMax;
         this.hitBox = new Circle(position.x, position.y, (width + height) / 2);
+        this.score = 0;
         this.lives = 5;
+    }
+
+    public void addScore() {
+        score++;
     }
 
     @Override
@@ -40,6 +48,10 @@ public class PlayerTank extends Tank {
             fire();
         }
         super.update(dt);
+    }
+
+    public void renderHUD(SpriteBatch batch, BitmapFont font) {
+        font.draw(batch, "Score:" + score, 20, 700);
     }
 
     public void checkMovement(float dt) {

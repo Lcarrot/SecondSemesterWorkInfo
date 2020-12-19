@@ -6,6 +6,7 @@ import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.math.MathUtils;
@@ -18,6 +19,7 @@ import game.tanki.units.Tank;
 
 public class TankGame extends ApplicationAdapter {
     private SpriteBatch batch;
+    private BitmapFont font;
     private PlayerTank player;
     private BulletEmitter bulletEmitter;
     private BotEmitter botEmitter;
@@ -25,7 +27,9 @@ public class TankGame extends ApplicationAdapter {
     private ClientApplicationJDX application;
     private RoomInfo roomInfo;
     private static final boolean FRIENDLY_FIRE = false;
-    public TankGame(){}
+
+    public TankGame() {
+    }
 
 
     public TankGame(ClientApplicationJDX application, RoomInfo roomInfo) {
@@ -44,6 +48,7 @@ public class TankGame extends ApplicationAdapter {
     @Override
     public void create() {
         TextureAtlas atlas = new TextureAtlas("game.pack");
+        font = new BitmapFont(Gdx.files.internal("font24.fnt"));
         batch = new SpriteBatch();
         player = new PlayerTank(this, atlas);
         bulletEmitter = new BulletEmitter(atlas);
@@ -61,6 +66,7 @@ public class TankGame extends ApplicationAdapter {
         player.render(batch);
         botEmitter.render(batch);
         bulletEmitter.render(batch);
+        player.renderHUD(batch, font);
         batch.end();
     }
 
@@ -87,6 +93,9 @@ public class TankGame extends ApplicationAdapter {
                         if (checkBulletAndTank(bot, bullet) && bot.getHitBox().contains(bullet.getPosition())) {
                             bullet.deactivate();
                             bot.takeDamage(bullet.getDamage());
+                            if (!bot.isActive()) {
+                                player.addScore();
+                            }
                             break;
                         }
                     }
@@ -114,8 +123,8 @@ public class TankGame extends ApplicationAdapter {
 
     public void closeGame() {
         if (Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE)) {
-            Gdx.app.exit();
-
+            dispose();
+            application.closeGame();
         }
     }
 }
