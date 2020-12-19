@@ -66,7 +66,6 @@ public class ApplicationUI extends Application implements ClientApplication {
 
     public void joinGame(Boolean booleanJoin, RoomInfo roomInfo){
         if (booleanJoin) {
-            stage.hide();
             game = new TankGame(this, roomInfo);
             new LwjglApplication(game, config);
         }
@@ -114,6 +113,10 @@ public class ApplicationUI extends Application implements ClientApplication {
         tcpClient.close();
     }
 
+    public void hideApplication(){
+        stage.hide();
+    }
+
 
     @Override
     public void setScene(ScenesNames scene){
@@ -136,8 +139,6 @@ public class ApplicationUI extends Application implements ClientApplication {
             }
 
             stage.setScene(new Scene(root));
-
-
         }
         catch (IOException exception){
             exception.printStackTrace();
@@ -184,11 +185,7 @@ public class ApplicationUI extends Application implements ClientApplication {
 
     @Override
     public void closeGame() {
-
-
         stage.show();
-
-
     }
 
 

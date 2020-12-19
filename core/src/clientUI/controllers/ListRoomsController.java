@@ -59,6 +59,7 @@ public class ListRoomsController {
         listRoom.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
+                parent.hideApplication();
                 RoomInfo room = listRoom.getSelectionModel().getSelectedItem();
                 parent.requestGame(room);
             }

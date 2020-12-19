@@ -27,6 +27,7 @@ public class AddRoomController {
 
     @FXML
     private void addRoom(ActionEvent event) {
+        parent.hideApplication();
         room = new RoomInfo(textFieldName.getText(), parent.getTcpClient().getId(),
                 Integer.parseInt (textFieldQuantity.getText()));
         parent.addRoom(room);
