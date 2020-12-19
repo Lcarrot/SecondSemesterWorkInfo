@@ -45,8 +45,11 @@ public class Room {
         return false;
     }
 
-    public void disconnect(TCPConnection connection) {
-        connections.remove(connection);
+    public boolean disconnect(TCPConnection connection) {
+        if (connections.size() > 0) {
+            return connections.remove(connection);
+        }
+        return false;
     }
 
     public List<TCPConnection> getConnections() {

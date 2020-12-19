@@ -66,9 +66,9 @@ public class ApplicationUI extends Application implements ClientApplication {
 
     public void joinGame(Boolean booleanJoin, RoomInfo roomInfo){
         if (booleanJoin) {
+            stage.hide();
             game = new TankGame(this, roomInfo);
             new LwjglApplication(game, config);
-            stage.hide();
         }
         else {
             // TODO: 12/19/2020 выдать какое то сообщение.

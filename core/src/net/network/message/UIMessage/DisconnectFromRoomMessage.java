@@ -6,7 +6,7 @@ import clientUI.RoomInfo;
 public class DisconnectFromRoomMessage extends TCPMessage<Integer> {
 
     private final int clientId;
-    private final RoomInfo roomInfo;
+    private RoomInfo roomInfo;
 
     public DisconnectFromRoomMessage(int clientId, RoomInfo roomInfo) {
         this.clientId = clientId;
@@ -19,6 +19,10 @@ public class DisconnectFromRoomMessage extends TCPMessage<Integer> {
 
     public int getClientId() {
         return clientId;
+    }
+
+    public void setRoomInfo(RoomInfo roomInfo) {
+        this.roomInfo = roomInfo;
     }
 
     @Override

@@ -111,13 +111,15 @@ public class TCPServer extends Server<TCPConnection, TCPMessage> {
             }
             else if (message instanceof DisconnectFromRoomMessage) {
                 getRoomById(((DisconnectFromRoomMessage) message).getRoomInfo().getRoomId())
-                        .ifPresent(room -> {
-                            getConnectionById(((DisconnectFromRoomMessage) message).getClientId())
-                                    .ifPresent(room::disconnect);
-                            List<TCPConnection> connections = room.getConnections();
-                            if (connections.size() != 0) broadcastSendMessage(connections, message);
-                            else gameRoomSet.remove(room);
-                        });
+                        .ifPresent(room -> getConnectionById(((DisconnectFromRoomMessage) message).getClientId())
+                                .ifPresent(connection -> {
+                                    if (room.disconnect(connection)) {
+                                        ((DisconnectFromRoomMessage) message).setRoomInfo(room.getRoomInfo());
+                                        List<TCPConnection> connections = room.getConnections();
+                                        if (connections.size() != 0) broadcastSendMessage(connections, message);
+                                        else gameRoomSet.remove(room);
+                                    }
+                                }));
             }
         }
 
