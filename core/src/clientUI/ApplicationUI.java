@@ -1,6 +1,8 @@
 package clientUI;
 
 import clientUI.controllers.*;
+import com.badlogic.gdx.backends.lwjgl.LwjglApplication;
+import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration;
 import game.tanki.TankGame;
 import javafx.animation.RotateTransition;
 import javafx.application.Application;
@@ -29,11 +31,16 @@ public class ApplicationUI extends Application implements ClientApplication {
     private static MediaPlayer mediaPlayer;
     private GameTCPClient tcpClient;
     private TankGame game;
+    private LwjglApplicationConfiguration config;
 
     // TODO: 12/19/2020 метод для запуска игры, tcpClient будет его вызывать, если удалось настроить подключение.
 
     @Override
     public void start(Stage primaryStage) throws Exception {
+        config = new LwjglApplicationConfiguration();
+        config.width = 1280;
+        config.height = 720;
+
         stage = primaryStage;
         stage.setWidth(1200);
         stage.setHeight(700);
@@ -49,6 +56,16 @@ public class ApplicationUI extends Application implements ClientApplication {
 
         tcpClient = new GameTCPClient(new Socket(InetAddress.getLocalHost(), Protocol.PORT), this);
 
+        setScene(ScenesNames.START);
+        stage.show();
+    }
+
+    public void startGame(){
+        new LwjglApplication(new TankGame(this), config);
+        stage.hide();
+    }
+
+    public void closeGame(){
         setScene(ScenesNames.START);
         stage.show();
     }

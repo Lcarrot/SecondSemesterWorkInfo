@@ -27,6 +27,7 @@ public class AddRoomController {
     @FXML
     private void addRoom(ActionEvent event) {
         parent.addRoom(room);
+        parent.startGame();
     }
 
     public void setRoom(RoomInfo room) {

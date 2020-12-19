@@ -1,4 +1,8 @@
 sourceCompatibility = 1.8
+sourceSets.main.resources.srcDirs = ["../core/assets"]
+
+
+project.ext.assetsDir = new File("../core/assets")
 [compileJava, compileTestJava]*.options*.encoding = 'UTF-8'
 
 sourceSets.main.java.srcDirs = [ "src/" ]

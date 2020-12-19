@@ -20,7 +20,6 @@ public class TankGame extends ApplicationAdapter {
     private BotEmitter botEmitter;
     private float gameTimer;
     private ClientApplicationJDX application;
-
     private static final boolean FRIENDLY_FIRE = false;
 
     public TankGame(){}
