@@ -8,5 +8,5 @@ public interface ClientApplicationJDX {
     void updateFrags(Integer id, Integer killsCount); // с сервера приходит сообщения о том, у кого обновились фраги и сколько их (сервер -> игра)
     void addKill(Integer integer); // игрок убил бота, необходимо добавить на сервер (игра -> сервер)
     void addPlayer(boolean status, RoomInfo roomInfo); //игрок присоединился, необходимо его отобразить (сервер -> игра)
-    void playerIsDisconnected(DisconnectFromRoomMessage message); // игрок отсоединился, необходимо его убрать из списка игроков (сервер -> игра)
+    void playerIsDisconnected(Integer id); // игрок отсоединился, необходимо его убрать из списка игроков (сервер -> игра)
 }

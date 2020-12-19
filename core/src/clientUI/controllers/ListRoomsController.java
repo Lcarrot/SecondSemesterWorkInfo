@@ -9,8 +9,8 @@ import javafx.scene.control.ListView;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
-import net.client.controllers.ChatStringController;
-import net.network.message.UIMessage.ChatStringMessage;
+import net.client.controllers.message.ChatMessageController;
+import net.network.message.UIMessage.ChatMessage;
 import net.server.Room;
 import clientUI.RoomInfo;
 
@@ -32,7 +32,7 @@ public class ListRoomsController {
     @FXML
     TextField textFieldMessage;
 
-    ChatStringController client;
+    ChatMessageController client;
 
     private List<Room> listObjectRoom;
 
@@ -64,8 +64,8 @@ public class ListRoomsController {
         }
     }
 
-    public void receivedMessage(ChatStringMessage chatStringMessage){
-        textAreaMessages.appendText("User " +chatStringMessage.getClientId() + ": " + chatStringMessage.getMessage() + "\n");
+    public void receivedMessage(ChatMessage chatMessage){
+        textAreaMessages.appendText("User " + chatMessage.getClientId() + ": " + chatMessage.getMessage() + "\n");
     }
 
     public void setParent(ApplicationUI parent) {

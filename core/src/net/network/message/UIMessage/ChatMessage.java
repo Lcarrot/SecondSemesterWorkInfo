@@ -2,20 +2,22 @@ package net.network.message.UIMessage;
 
 import net.network.message.TCPMessage;
 
-public class ChatStringMessage extends TCPMessage<String> {
+import java.io.Serializable;
+
+public class ChatMessage extends TCPMessage<Serializable> {
 
     private final int clientId;
-    private String message;
+    private Serializable message;
 
-    public ChatStringMessage(int clientId) {
+    public ChatMessage(int clientId) {
         this.clientId = clientId;
     }
 
-    public String getMessage() {
+    public Serializable getMessage() {
         return message;
     }
 
-    public void setMessage(String message) {
+    public void setMessage(Serializable message) {
         this.message = message;
     }
 

@@ -1,13 +1,13 @@
-package net.client.controllers;
+package net.client.controllers.message;
 
 import clientUI.ClientApplication;
 import clientUI.RoomInfo;
 import net.client.TCPClient;
 import net.network.message.UIMessage.CreateRoomMessage;
 
-public class CreateRoomController extends AbstractController<CreateRoomMessage, RoomInfo>{
+public class CreateRoomMessageController extends AbstractMessageController<CreateRoomMessage, RoomInfo> {
 
-    public CreateRoomController(TCPClient client, ClientApplication application) {
+    public CreateRoomMessageController(TCPClient client, ClientApplication application) {
         super(client, application);
     }
 

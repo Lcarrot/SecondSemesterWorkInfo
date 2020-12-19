@@ -1,11 +1,13 @@
 package net.client;
 
 import clientUI.ClientApplication;
+import clientUI.RoomInfo;
 import net.network.connection.TCPConnection;
 import net.network.message.*;
 import net.network.message.SystemMessage.CloseConnectionMessage;
 import net.network.message.UIMessage.*;
 
+import java.io.Serializable;
 import java.net.Socket;
 
 public class GameTCPClient extends TCPClient {
@@ -56,15 +58,45 @@ public class GameTCPClient extends TCPClient {
         this.id = id;
     }
 
+    @Override
+    public void addPlayerFrag(Integer killsCount) {
+        roomMessageController.send(killsCount);
+    }
+
+    @Override
+    public void updateListOfRooms() {
+        listRoomController.send(true);
+    }
+
+    @Override
+    public void createNewRoom(RoomInfo roomInfo) {
+        createRoomController.send(roomInfo);
+    }
+
+    @Override
+    public <T extends Serializable> void sendChatMessage(T obj) {
+        chatStringController.send(obj);
+    }
+
+    @Override
+    public void setNewRoom(RoomInfo roomInfo) {
+        roomMessageController.setRoom(roomInfo);
+    }
+
+    @Override
+    public void send(TCPMessage message) {
+        tcpReceiverMessage.handleMessage(message);
+    }
+
     private class TCPReceiverMessage {
 
         private void handleMessage(TCPMessage message) {
             if (message instanceof CloseConnectionMessage) closeConnection(connection);
-            else if (message instanceof ChatStringMessage) chatStringController.receive((ChatStringMessage) message);
+            else if (message instanceof ChatMessage) chatStringController.receive((ChatMessage) message);
             else if (message instanceof UpdateListRoomMessage)  listRoomController.receive(((UpdateListRoomMessage) message).getRooms());
             else if (message instanceof ConnectToRoomMessage) connectToRoomController.receive(((ConnectToRoomMessage) message));
             else if (message instanceof CreateRoomMessage) createRoomController.receive(((CreateRoomMessage) message));
-            else if (message instanceof DoFragMessage) roomController.receive((DoFragMessage) message);
+            else if (message instanceof DoFragMessage) roomMessageController.receive((DoFragMessage) message);
             else if (message instanceof DisconnectFromRoomMessage) disconnectFromRoomController.receive((DisconnectFromRoomMessage) message);
         }
     }

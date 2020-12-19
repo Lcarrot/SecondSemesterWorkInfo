@@ -1,6 +1,5 @@
 package net.server;
 
-import net.network.connection.Connection;
 import net.network.connection.TCPConnection;
 import net.network.message.*;
 import net.network.message.SystemMessage.CloseConnectionMessage;
@@ -76,33 +75,41 @@ public class TCPServer extends Server<TCPConnection, TCPMessage> {
         private void handleMessage(TCPMessage message) {
             if (message instanceof CloseConnectionMessage) {
                 getConnectionById(((CloseConnectionMessage) message).getClientId()).ifPresent(TCPServer.this::closeConnection);
-            } else if (message instanceof CreateRoomMessage) {
+            }
+            else if (message instanceof CreateRoomMessage) {
                 Room room = new Room(next_room_id++, (CreateRoomMessage) message);
                 gameRoomSet.add(room);
                 getConnectionById(((CreateRoomMessage) message).getClientId()).ifPresent(connection -> {
                     ((CreateRoomMessage) message).setCreated(room.connect(connection));
                     connection.send(message);
                 });
-            } else if (message instanceof ChatStringMessage) {
+            }
+            else if (message instanceof ChatMessage) {
                 broadcastSendMessage(connections, message);
-            } else if (message instanceof UpdateListRoomMessage) {
+            }
+            else if (message instanceof UpdateListRoomMessage) {
                 ((UpdateListRoomMessage) message).setRooms(gameRoomSet.stream().map(Room::getRoomInfo).collect(Collectors.toList()));
                 getConnectionById(((UpdateListRoomMessage) message).getClientId()).ifPresent(
                         connection -> {
                             ((UpdateListRoomMessage) message).setRooms(gameRoomSet.stream().map(Room::getRoomInfo).collect(Collectors.toList()));
                             connection.send(message);
                         });
-            } else if (message instanceof DoFragMessage) {
+            }
+            else if (message instanceof DoFragMessage) {
                 getRoomById(((DoFragMessage) message).getRoomId()).ifPresent(
                         room -> broadcastSendMessage(room.getConnections(), message));
-            } else if (message instanceof ConnectToRoomMessage) {
+            }
+            else if (message instanceof ConnectToRoomMessage) {
                 getRoomById(((ConnectToRoomMessage) message).getRoomInfo().getRoomId()).ifPresent
                         (room -> getConnectionById(((ConnectToRoomMessage) message).getClientId()).ifPresent
                                 (connection -> {
                                     ((ConnectToRoomMessage) message).setStatus(room.connect(connection));
+                                    ((ConnectToRoomMessage) message).setOtherPlayers(room.getConnections().stream()
+                                            .map(TCPConnection::getId).collect(Collectors.toList()));
                                     connection.send(message);
                                 }));
-            } else if (message instanceof DisconnectFromRoomMessage) {
+            }
+            else if (message instanceof DisconnectFromRoomMessage) {
                 getRoomById(((DisconnectFromRoomMessage) message).getRoomInfo().getRoomId())
                         .ifPresent(room -> {
                             getConnectionById(((DisconnectFromRoomMessage) message).getClientId())

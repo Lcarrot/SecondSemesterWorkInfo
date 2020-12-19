@@ -1,7 +1,8 @@
 package net.client;
 
 import clientUI.ClientApplication;
-import net.client.controllers.*;
+import net.client.controllers.ConnectionController;
+import net.client.controllers.message.*;
 import net.network.ConnectionListener;
 import net.network.connection.Sender;
 import net.network.connection.TCPConnection;
@@ -9,44 +10,28 @@ import net.network.message.TCPMessage;
 
 import java.net.Socket;
 
-public abstract class TCPClient implements ConnectionListener<TCPConnection, TCPMessage>, Sender<TCPMessage> {
+public abstract class TCPClient implements ConnectionListener<TCPConnection, TCPMessage>, Sender<TCPMessage>, ConnectionController {
 
     protected TCPConnection connection;
-    protected final ChatStringController chatStringController;
-    protected final ListRoomController listRoomController;
-    protected RoomController roomController;
-    protected final ConnectToRoomController connectToRoomController;
-    protected final CreateRoomController createRoomController;
-    protected final DisconnectFromRoomController disconnectFromRoomController;
+    protected final ChatMessageController chatStringController;
+    protected final ListRoomMessageController listRoomController;
+    protected RoomMessageController roomMessageController;
+    protected final ConnectToRoomMessageController connectToRoomController;
+    protected final CreateRoomMessageController createRoomController;
+    protected final DisconnectFromRoomMessageController disconnectFromRoomController;
     protected int id;
 
-    public TCPClient(Socket socket, ClientApplication application) {
+    public TCPClient(Socket socket, ClientApplication application)  {
         openConnection(new TCPConnection(socket, this));
-        chatStringController = new ChatStringController(this, id, application);
-        listRoomController = new ListRoomController(this, application);
-        connectToRoomController = new ConnectToRoomController(this, application);
-        createRoomController = new CreateRoomController(this, application);
-        roomController = new RoomController(this, application);
-        disconnectFromRoomController = new DisconnectFromRoomController(this, application);
+        chatStringController = new ChatMessageController(this, id, application);
+        listRoomController = new ListRoomMessageController(this, application);
+        connectToRoomController = new ConnectToRoomMessageController(this, application);
+        createRoomController = new CreateRoomMessageController(this, application);
+        roomMessageController = new RoomMessageController(this, application);
+        disconnectFromRoomController = new DisconnectFromRoomMessageController(this, application);
     }
 
     public int getId() {
         return id;
-    }
-
-    public ChatStringController getChatController() {
-        return chatStringController;
-    }
-
-    public ConnectToRoomController getConnectToRoomController() {return connectToRoomController;}
-
-    public CreateRoomController getCreateRoomController() { return createRoomController;}
-
-    public ListRoomController getListRoomController() {return listRoomController;}
-
-    public RoomController getRoomController() {return roomController;}
-
-    public void send(TCPMessage message) {
-        connection.send(message);
     }
 }

@@ -1,21 +1,21 @@
-package net.client.controllers;
+package net.client.controllers.message;
 
 import clientUI.ClientApplication;
 import clientUI.RoomInfo;
 import net.client.TCPClient;
 import net.network.message.UIMessage.DisconnectFromRoomMessage;
 
-public class DisconnectFromRoomController extends AbstractController<DisconnectFromRoomMessage,RoomInfo> {
+public class DisconnectFromRoomMessageController extends AbstractMessageController<DisconnectFromRoomMessage,RoomInfo> {
 
     private DisconnectFromRoomMessage message;
 
-    public DisconnectFromRoomController(TCPClient client, ClientApplication application) {
+    public DisconnectFromRoomMessageController(TCPClient client, ClientApplication application) {
         super(client, application);
     }
 
     @Override
     public void receive(DisconnectFromRoomMessage message) {
-        // TODO: 12/19/2020 удалить игрока из таблички
+        application.playerIsDisconnected(message.getClientId());
     }
 
     @Override

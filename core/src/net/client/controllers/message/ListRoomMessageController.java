@@ -1,4 +1,4 @@
-package net.client.controllers;
+package net.client.controllers.message;
 
 import clientUI.ClientApplication;
 import net.client.TCPClient;
@@ -7,11 +7,11 @@ import clientUI.RoomInfo;
 
 import java.util.List;
 
-public class ListRoomController extends AbstractController<List<RoomInfo>, Boolean> {
+public class ListRoomMessageController extends AbstractMessageController<List<RoomInfo>, Boolean> {
 
     private final UpdateListRoomMessage message;
 
-    public ListRoomController(TCPClient client, ClientApplication application) {
+    public ListRoomMessageController(TCPClient client, ClientApplication application) {
         super(client, application);
         message = new UpdateListRoomMessage(client.getId());
     }

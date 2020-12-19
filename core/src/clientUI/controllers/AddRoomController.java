@@ -26,12 +26,8 @@ public class AddRoomController {
 
     @FXML
     private void addRoom(ActionEvent event) {
-//        RoomInfo info = new RoomInfo(1, "hi", 1, 5);
-//        Room room = new Room(info);
         parent.addRoom(room);
     }
-
-
 
     public void setRoom(RoomInfo room) {
         this.room = room;

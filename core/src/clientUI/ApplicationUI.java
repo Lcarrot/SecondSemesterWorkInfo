@@ -13,8 +13,7 @@ import javafx.scene.media.MediaPlayer;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 import net.client.GameTCPClient;
-import net.network.message.UIMessage.ChatStringMessage;
-import net.network.message.UIMessage.DisconnectFromRoomMessage;
+import net.network.message.UIMessage.ChatMessage;
 import net.starter.Protocol;
 
 import java.io.IOException;
@@ -30,6 +29,8 @@ public class ApplicationUI extends Application implements ClientApplication {
     private static MediaPlayer mediaPlayer;
     private GameTCPClient tcpClient;
     private TankGame game;
+
+    // TODO: 12/19/2020 метод для запуска игры, tcpClient будет его вызывать, если удалось настроить подключение.
 
     @Override
     public void start(Stage primaryStage) throws Exception {
@@ -54,8 +55,8 @@ public class ApplicationUI extends Application implements ClientApplication {
 
 
     @Override
-    public void receivedMessage(ChatStringMessage chatStringMessage) {
-        listRoomsController.receivedMessage(chatStringMessage);
+    public void receivedMessage(ChatMessage chatMessage) {
+        listRoomsController.receivedMessage(chatMessage);
     }
 
     @Override
@@ -65,17 +66,17 @@ public class ApplicationUI extends Application implements ClientApplication {
 
     @Override
     public void sendMessage(String message) {
-        tcpClient.getChatController().send(message);
+        tcpClient.sendChatMessage(message);
     }
 
     @Override
     public void addRoom(RoomInfo room) {
-
+        tcpClient.createNewRoom(room);
     }
 
     @Override
     public void updateListRooms() {
-        tcpClient.getListRoomController().send(true);
+        tcpClient.updateListOfRooms();
     }
 
     public void closeApplication(){
@@ -121,7 +122,7 @@ public class ApplicationUI extends Application implements ClientApplication {
         rotateTransition.play();
     }
 
-    public static void main(String[] args) throws Exception {
+    public static void main(String[] args) {
         Application.launch();
     }
 
@@ -133,7 +134,7 @@ public class ApplicationUI extends Application implements ClientApplication {
 
     @Override
     public void addKill(Integer integer) {
-        tcpClient.getRoomController().send(integer);
+        tcpClient.addPlayerFrag(integer);
     }
 
     @Override
@@ -147,7 +148,7 @@ public class ApplicationUI extends Application implements ClientApplication {
     }
 
     @Override
-    public void playerIsDisconnected(DisconnectFromRoomMessage message) {
+    public void playerIsDisconnected(Integer id) {
         // TODO: 12/19/2020 удалить игрока из таблицы
     }
 }
