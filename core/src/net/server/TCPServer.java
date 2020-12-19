@@ -4,7 +4,6 @@ import net.network.connection.TCPConnection;
 import net.network.message.*;
 import net.network.message.SystemMessage.CloseConnectionMessage;
 import net.network.message.UIMessage.*;
-import net.server.room.Room;
 
 import java.io.IOException;
 import java.net.ServerSocket;
@@ -59,12 +58,12 @@ public class TCPServer extends Server<TCPConnection, TCPMessage> {
     public void closeConnection(TCPConnection connection) {
         connections.remove(connection);
         connection.close();
-        System.out.println((connection.toString() + "was closed"));
+        System.out.println((connection.toString() + " was closed"));
     }
 
     @Override
     public void connectException(TCPConnection connection, Exception exception) {
-        throw new RuntimeException(connection.toString() + "throw exception",exception);
+        throw new RuntimeException(connection.toString() + "throw exception ",exception);
     }
 
     @Override

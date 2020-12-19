@@ -1,24 +1,48 @@
 net/network/ConnectionListener.java
  net.network.ConnectionListener
-net/network/message/UIMessage/CreateRoomMessage.java
- net.network.message.UIMessage.CreateRoomMessage
+net/network/connection/Sender.java
+ net.network.connection.Sender
 game/tanki/Weapon.java
  game.tanki.Weapon
+net/network/message/SystemMessage/CloseConnectionMessage.java
+ net.network.message.SystemMessage.CloseConnectionMessage
+net/network/message/UIMessage/UpdateListRoomMessage.java
+ net.network.message.UIMessage.UpdateListRoomMessage
+clientUI/controllers/ScenesNames.java
+ clientUI.controllers.ScenesNames
+game/tanki/utils/Direction.java
+ game.tanki.utils.Direction
+net/network/message/UIMessage/DoFragMessage.java
+ net.network.message.UIMessage.DoFragMessage
+net/network/message/UIMessage/ChatStringMessage.java
+ net.network.message.UIMessage.ChatStringMessage
+net/network/connection/Connection.java
+ net.network.connection.Connection
+net/starter/Protocol.java
+ net.starter.Protocol
+game/tanki/utils/TankOwner.java
+ game.tanki.utils.TankOwner
+net/server/Server.java
+ net.server.Server
+net/network/connection/Receiver.java
+ net.network.connection.Receiver
+net/network/message/TCPMessage.java
+ net.network.message.TCPMessage
+net/network/connection/AbstractConnection.java
+ net.network.connection.AbstractConnection
+net/network/message/UIMessage/CreateRoomMessage.java
+ net.network.message.UIMessage.CreateRoomMessage
+net/server/Room.java
+ net.server.Room
 clientUI/controllers/ListRoomsController.java
  clientUI.controllers.ListRoomsController
 clientUI/ApplicationUI.java
  clientUI.ApplicationUI
  clientUI.ApplicationUI$1
-clientUI/controllers/ScenesNames.java
- clientUI.controllers.ScenesNames
 game/tanki/units/BotTank.java
  game.tanki.units.BotTank
-net/network/message/UIMessage/DoFragMessage.java
- net.network.message.UIMessage.DoFragMessage
 game/tanki/emitters/BulletEmitter.java
  game.tanki.emitters.BulletEmitter
-net/network/connection/Connection.java
- net.network.connection.Connection
 net/client/controllers/ConnectToRoomController.java
  net.client.controllers.ConnectToRoomController
 game/tanki/emitters/BotEmitter.java
@@ -27,20 +51,12 @@ clientUI/ClientApplication.java
  clientUI.ClientApplication
 net/client/controllers/AbstractController.java
  net.client.controllers.AbstractController
-net/network/message/TCPMessage.java
- net.network.message.TCPMessage
 net/client/controllers/CreateRoomController.java
  net.client.controllers.CreateRoomController
-net/network/connection/Sender.java
- net.network.connection.Sender
 net/network/connection/TCPConnection.java
  net.network.connection.TCPConnection
-net/network/message/UIMessage/ChatStringMessage.java
- net.network.message.UIMessage.ChatStringMessage
 game/tanki/units/Tank.java
  game.tanki.units.Tank
-game/tanki/utils/TankOwner.java
- game.tanki.utils.TankOwner
 net/network/message/UIMessage/ConnectToRoomMessage.java
  net.network.message.UIMessage.ConnectToRoomMessage
 net/server/TCPServer.java
@@ -49,26 +65,16 @@ net/server/TCPServer.java
  net.server.TCPServer$TCPReceiverMessage
 net/starter/ServerStarter.java
  net.starter.ServerStarter
-net/starter/Protocol.java
- net.starter.Protocol
 game/tanki/Bullet.java
  game.tanki.Bullet
 net/client/GameTCPClient.java
  net.client.GameTCPClient
  net.client.GameTCPClient$1
  net.client.GameTCPClient$TCPReceiverMessage
-net/network/connection/AbstractConnection.java
- net.network.connection.AbstractConnection
 clientUI/controllers/StartController.java
  clientUI.controllers.StartController
-net/network/connection/Receiver.java
- net.network.connection.Receiver
-net/server/Server.java
- net.server.Server
 net/client/controllers/ListRoomController.java
  net.client.controllers.ListRoomController
-game/tanki/utils/Direction.java
- game.tanki.utils.Direction
 clientUI/controllers/AddRoomController.java
  clientUI.controllers.AddRoomController
 net/client/controllers/ChatStringController.java
@@ -83,11 +89,5 @@ game/tanki/units/PlayerTank.java
  game.tanki.units.PlayerTank
 game/tanki/TankGame.java
  game.tanki.TankGame
-net/network/message/UIMessage/UpdateListRoomMessage.java
- net.network.message.UIMessage.UpdateListRoomMessage
-net/network/message/SystemMessage/CloseConnectionMessage.java
- net.network.message.SystemMessage.CloseConnectionMessage
-net/server/room/Room.java
- net.server.room.Room
 clientUI/RoomInfo.java
  clientUI.RoomInfo

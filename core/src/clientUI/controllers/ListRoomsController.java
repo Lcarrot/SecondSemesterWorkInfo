@@ -11,7 +11,7 @@ import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import net.client.controllers.ChatStringController;
 import net.network.message.UIMessage.ChatStringMessage;
-import net.server.room.Room;
+import net.server.Room;
 import clientUI.RoomInfo;
 
 import java.util.*;

@@ -4,9 +4,9 @@ import java.io.Serializable;
 
 public class RoomInfo implements Serializable {
 
-    private String name;
-    private int hostId;
-    private int count;
+    private final String name;
+    private final int hostId;
+    private final int count;
     private int roomId;
 
     public RoomInfo(String name, int hostId, int count) {
@@ -14,6 +14,8 @@ public class RoomInfo implements Serializable {
         this.hostId = hostId;
         this.count = count;
     }
+
+
 
     public int getRoomId() {
         return roomId;

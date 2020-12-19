@@ -1,31 +1,28 @@
-package net.server.room;
+package net.server;
 
 import clientUI.RoomInfo;
 import net.network.connection.TCPConnection;
 import net.network.message.UIMessage.CreateRoomMessage;
 
-import java.io.Serializable;
 import java.util.List;
 
-public class Room implements Serializable {
+public class Room {
 
-    private RoomInfo roomInfo;
-    private String name;
-    private int roomId;
+    private final RoomInfo roomInfo;
     private List<TCPConnection> connections;
 
     public Room(int roomId, RoomInfo roomInfo) {
-        this.roomId  = roomId;
         this.roomInfo = roomInfo;
+        this.roomInfo.setRoomId(roomId);
     }
 
     public Room(int roomId, CreateRoomMessage message) {
-        this.roomId = roomId;
         roomInfo = message.getRoomInfo();
+        this.roomInfo.setRoomId(roomId);
     }
 
     public String getName() {
-        return name;
+        return roomInfo.getName();
     }
 
     public RoomInfo getRoomInfo() {
@@ -33,7 +30,7 @@ public class Room implements Serializable {
     }
 
     public int getRoomId() {
-        return roomId;
+        return roomInfo.getRoomId();
     }
 
     public boolean connect(TCPConnection connection) {

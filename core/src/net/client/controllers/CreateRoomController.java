@@ -13,10 +13,7 @@ public class CreateRoomController extends AbstractController<CreateRoomMessage, 
 
     @Override
     public void receive(CreateRoomMessage message) {
-        if (message.isCreated()) {
-            client.getRoomController().setRoomId(message.getRoomInfo().getRoomId());
-            // TODO: 12/19/2020 открывать игру
-        }
+        // TODO: 12/19/2020 метод запускающий игру
     }
 
     @Override

@@ -95,4 +95,12 @@ public class TCPConnection extends AbstractConnection<TCPMessage, TCPConnection>
             }
         }
     }
+
+    @Override
+    public String toString() {
+        return "TCPConnection{" +
+                "socket=" + socket.getInetAddress() +
+                ", id=" + id +
+                '}';
+    }
 }

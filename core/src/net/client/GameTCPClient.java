@@ -23,7 +23,7 @@ public class GameTCPClient extends TCPClient {
         id = connection.getId();
         Thread connectionThread = new Thread(connection);
         connectionThread.start();
-        System.out.println((connection.toString() + "was added"));
+        System.out.println((connection.toString() + " was added"));
     }
 
     public int getId() {
