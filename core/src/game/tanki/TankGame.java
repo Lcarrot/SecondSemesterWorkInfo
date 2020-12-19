@@ -3,6 +3,7 @@ package game.tanki;
 import clientUI.ClientApplicationJDX;
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
@@ -69,6 +70,7 @@ public class TankGame extends ApplicationAdapter {
         botEmitter.update(dt);
         bulletEmitter.update(dt);
         checkCollisions();
+        closeGame();
     }
 
     public void checkCollisions() {
@@ -104,5 +106,12 @@ public class TankGame extends ApplicationAdapter {
     @Override
     public void dispose() {
         batch.dispose();
+    }
+
+    public void closeGame() {
+        if (Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE)) {
+            dispose();
+            application.closeGame();
+        }
     }
 }

@@ -6,6 +6,7 @@ import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration;
 import game.tanki.TankGame;
 import javafx.animation.RotateTransition;
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -159,6 +160,17 @@ public class ApplicationUI extends Application implements ClientApplication {
         setScene(ScenesNames.START);
         stage.show();
         // TODO: 12/19/2020 удалить игрока из таблицы. Лёня добавит свою часть.
+    }
+
+    @Override
+    public void closeGame() {
+        Platform.runLater(new Runnable() {
+            @Override
+            public void run() {
+                setScene(ScenesNames.START);
+                stage.show();
+            }
+        });
     }
 
     public static void main(String[] args) {

@@ -9,4 +9,5 @@ public interface ClientApplicationJDX {
     void addKill(Integer integer); // игрок убил бота, необходимо добавить на сервер (игра -> сервер)
     void addPlayer(boolean status, RoomInfo roomInfo); //игрок присоединился, необходимо его отобразить (сервер -> игра)
     void playerIsDisconnected(Integer id); // игрок отсоединился, необходимо его убрать из списка игроков (сервер -> игра)
+    void closeGame();
 }
