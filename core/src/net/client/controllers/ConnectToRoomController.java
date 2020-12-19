@@ -16,12 +16,11 @@ public class ConnectToRoomController extends AbstractController<ConnectToRoomMes
         if (message.isStatus()) {
             client.getRoomController().setRoomId(message.getRoomInfo().getRoomId());
         }
-        application.addPlayer(message);
+        application.addPlayer(message.isStatus(), message.getRoomInfo());
     }
 
     @Override
     public void send(RoomInfo info) {
-        ConnectToRoomMessage message = new ConnectToRoomMessage(client.getId(), info);
-        client.send(message);
+        client.send(new ConnectToRoomMessage(client.getId(), info));
     }
 }

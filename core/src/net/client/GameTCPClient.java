@@ -59,14 +59,13 @@ public class GameTCPClient extends TCPClient {
     private class TCPReceiverMessage {
 
         private void handleMessage(TCPMessage message) {
-            if (message instanceof CloseConnectionMessage) { closeConnection(connection); }
-            else if (message instanceof ChatStringMessage) { chatStringController.receive((ChatStringMessage) message); }
-            else if (message instanceof UpdateListRoomMessage) { listRoomController.receive(((UpdateListRoomMessage) message).getRooms()); }
-            else if (message instanceof ConnectToRoomMessage) {
-                connectToRoomController.receive(((ConnectToRoomMessage) message));
-            }
-            else if (message instanceof CreateRoomMessage) {createRoomController.receive(((CreateRoomMessage) message)); }
-            else if (message instanceof DoFragMessage) {roomController.receive((DoFragMessage) message);}
+            if (message instanceof CloseConnectionMessage) closeConnection(connection);
+            else if (message instanceof ChatStringMessage) chatStringController.receive((ChatStringMessage) message);
+            else if (message instanceof UpdateListRoomMessage)  listRoomController.receive(((UpdateListRoomMessage) message).getRooms());
+            else if (message instanceof ConnectToRoomMessage) connectToRoomController.receive(((ConnectToRoomMessage) message));
+            else if (message instanceof CreateRoomMessage) createRoomController.receive(((CreateRoomMessage) message));
+            else if (message instanceof DoFragMessage) roomController.receive((DoFragMessage) message);
+            else if (message instanceof DisconnectFromRoomMessage) disconnectFromRoomController.receive((DisconnectFromRoomMessage) message);
         }
     }
 }

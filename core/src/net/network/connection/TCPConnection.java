@@ -10,7 +10,7 @@ public class TCPConnection extends AbstractConnection<TCPMessage, TCPConnection>
 
     private InputStream in;
     private OutputStream out;
-    private Socket socket;
+    private final Socket socket;
     private int id;
 
     public TCPConnection(Socket socket, ConnectionListener<TCPConnection, TCPMessage> listener) {
@@ -23,7 +23,7 @@ public class TCPConnection extends AbstractConnection<TCPMessage, TCPConnection>
         } catch (IOException e) {
             listener.connectException(this, e);
         }
-        isAlive = true;
+        isAlive = !socket.isClosed();
     }
 
     public TCPConnection(Socket socket, ConnectionListener<TCPConnection, TCPMessage> listener, int id) {
@@ -37,7 +37,7 @@ public class TCPConnection extends AbstractConnection<TCPMessage, TCPConnection>
         } catch (IOException e) {
             listener.connectException(this, e);
         }
-        isAlive = true;
+        isAlive = !socket.isClosed();
     }
 
     private void sendId(int id) throws IOException {
@@ -74,6 +74,7 @@ public class TCPConnection extends AbstractConnection<TCPMessage, TCPConnection>
     public void close() {
         try {
             socket.close();
+            isAlive = false;
         } catch (IOException e) {
             listener.connectException(this, e);
         }
@@ -81,7 +82,7 @@ public class TCPConnection extends AbstractConnection<TCPMessage, TCPConnection>
 
     @Override
     public void run() {
-        while (!socket.isClosed()) {
+        while (isAlive) {
             try {
                 if (in.available() != 0) {
                     ObjectInputStream inputStream = new ObjectInputStream(in);

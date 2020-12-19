@@ -24,7 +24,7 @@ public class RoomController implements Receiver<DoFragMessage>, Sender<Integer> 
 
     @Override
     public void receive(DoFragMessage message) {
-        clientApplication.updateFrags(message);
+        clientApplication.updateFrags(message.getId(), message.getKills());
     }
 
     @Override

@@ -17,6 +17,7 @@ public abstract class TCPClient implements ConnectionListener<TCPConnection, TCP
     protected RoomController roomController;
     protected final ConnectToRoomController connectToRoomController;
     protected final CreateRoomController createRoomController;
+    protected final DisconnectFromRoomController disconnectFromRoomController;
     protected int id;
 
     public TCPClient(Socket socket, ClientApplication application) {
@@ -26,6 +27,7 @@ public abstract class TCPClient implements ConnectionListener<TCPConnection, TCP
         connectToRoomController = new ConnectToRoomController(this, application);
         createRoomController = new CreateRoomController(this, application);
         roomController = new RoomController(this, application);
+        disconnectFromRoomController = new DisconnectFromRoomController(this, application);
     }
 
     public int getId() {

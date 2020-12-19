@@ -1,5 +1,6 @@
 package net.server;
 
+import net.network.connection.Connection;
 import net.network.connection.TCPConnection;
 import net.network.message.*;
 import net.network.message.SystemMessage.CloseConnectionMessage;
@@ -16,7 +17,6 @@ import java.util.stream.Collectors;
 public class TCPServer extends Server<TCPConnection, TCPMessage> {
 
     private final ThreadPoolExecutor executor;
-    private final CloseConnectionMessage closeConnectionMessage;
     private final Set<Room> gameRoomSet;
     private int next_conn_id = 0;
     private int next_room_id = 0;
@@ -26,7 +26,6 @@ public class TCPServer extends Server<TCPConnection, TCPMessage> {
         super(port);
         executor = (ThreadPoolExecutor) Executors.newFixedThreadPool(threadPoolSize);
         receiverMessage = new TCPReceiverMessage();
-        closeConnectionMessage = new CloseConnectionMessage();
         gameRoomSet = new LinkedHashSet<>();
     }
 
@@ -63,7 +62,8 @@ public class TCPServer extends Server<TCPConnection, TCPMessage> {
 
     @Override
     public void connectException(TCPConnection connection, Exception exception) {
-        throw new RuntimeException(connection.toString() + "throw exception ",exception);
+        System.out.println(connection.toString() + " throw exception:");
+        exception.printStackTrace();
     }
 
     @Override
@@ -77,9 +77,10 @@ public class TCPServer extends Server<TCPConnection, TCPMessage> {
             if (message instanceof CloseConnectionMessage) {
                 getConnectionById(((CloseConnectionMessage) message).getClientId()).ifPresent(TCPServer.this::closeConnection);
             } else if (message instanceof CreateRoomMessage) {
-                gameRoomSet.add(new Room(next_room_id++, (CreateRoomMessage) message));
+                Room room = new Room(next_room_id++, (CreateRoomMessage) message);
+                gameRoomSet.add(room);
                 getConnectionById(((CreateRoomMessage) message).getClientId()).ifPresent(connection -> {
-                    ((CreateRoomMessage) message).setCreated(true);
+                    ((CreateRoomMessage) message).setCreated(room.connect(connection));
                     connection.send(message);
                 });
             } else if (message instanceof ChatStringMessage) {
@@ -103,8 +104,13 @@ public class TCPServer extends Server<TCPConnection, TCPMessage> {
                                 }));
             } else if (message instanceof DisconnectFromRoomMessage) {
                 getRoomById(((DisconnectFromRoomMessage) message).getRoomInfo().getRoomId())
-                        .ifPresent(room -> getConnectionById(((DisconnectFromRoomMessage) message)
-                                .getClientId()).ifPresent(room::disconnect));
+                        .ifPresent(room -> {
+                            getConnectionById(((DisconnectFromRoomMessage) message).getClientId())
+                                    .ifPresent(room::disconnect);
+                            List<TCPConnection> connections = room.getConnections();
+                            if (connections.size() != 0) broadcastSendMessage(connections, message);
+                            else gameRoomSet.remove(room);
+                        });
             }
         }
 
@@ -113,8 +119,7 @@ public class TCPServer extends Server<TCPConnection, TCPMessage> {
         }
 
         private Optional<Room> getRoomById(int id) {
-            return gameRoomSet.stream()
-                    .filter(room -> room.getRoomId() == id).findAny();
+            return gameRoomSet.stream().filter(room -> room.getRoomId() == id).findAny();
         }
 
         private Optional<TCPConnection> getConnectionById(int id) {

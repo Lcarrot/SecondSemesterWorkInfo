@@ -4,6 +4,7 @@ import clientUI.RoomInfo;
 import net.network.connection.TCPConnection;
 import net.network.message.UIMessage.CreateRoomMessage;
 
+import java.util.LinkedList;
 import java.util.List;
 
 public class Room {
@@ -14,11 +15,13 @@ public class Room {
     public Room(int roomId, RoomInfo roomInfo) {
         this.roomInfo = roomInfo;
         this.roomInfo.setRoomId(roomId);
+        connections = new LinkedList<>();
     }
 
     public Room(int roomId, CreateRoomMessage message) {
         roomInfo = message.getRoomInfo();
         this.roomInfo.setRoomId(roomId);
+        connections = new LinkedList<>();
     }
 
     public String getName() {

@@ -14,8 +14,7 @@ import javafx.stage.Stage;
 import javafx.util.Duration;
 import net.client.GameTCPClient;
 import net.network.message.UIMessage.ChatStringMessage;
-import net.network.message.UIMessage.ConnectToRoomMessage;
-import net.network.message.UIMessage.DoFragMessage;
+import net.network.message.UIMessage.DisconnectFromRoomMessage;
 import net.starter.Protocol;
 
 import java.io.IOException;
@@ -126,9 +125,10 @@ public class ApplicationUI extends Application implements ClientApplication {
         Application.launch();
     }
 
+
     @Override
-    public void updateFrags(DoFragMessage message) {
-        // TODO: 12/19/2020 вызывается обновление фрагов game. что то там
+    public void updateFrags(Integer id, Integer killsCount) {
+        // TODO: 12/19/2020 обновлять убийства у игрока с таким id
     }
 
     @Override
@@ -137,12 +137,17 @@ public class ApplicationUI extends Application implements ClientApplication {
     }
 
     @Override
-    public void addPlayer(ConnectToRoomMessage message) {
-        if (message.isStatus()) {
+    public void addPlayer(boolean bool, RoomInfo roomInfo) {
+        if (bool) {
             // TODO: 12/19/2020   добавить игрока в табличку и начать отслеживать фраги
         }
         else {
             // TODO: 12/19/2020 вывести окошко с текстом, что такое невозможно
         }
+    }
+
+    @Override
+    public void playerIsDisconnected(DisconnectFromRoomMessage message) {
+        // TODO: 12/19/2020 удалить игрока из таблицы
     }
 }
