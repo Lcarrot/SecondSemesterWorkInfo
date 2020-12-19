@@ -26,6 +26,7 @@ public class RoomMessageController extends AbstractMessageController<DoFragMessa
     @Override
     public void send(Integer integer) {
         message.setKills(integer);
+        System.out.println(message);
         client.send(message);
     }
 }

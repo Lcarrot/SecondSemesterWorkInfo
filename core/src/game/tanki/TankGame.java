@@ -16,6 +16,9 @@ import game.tanki.units.BotTank;
 import game.tanki.units.PlayerTank;
 import game.tanki.units.Tank;
 
+import java.util.Map;
+import java.util.Set;
+
 
 public class TankGame extends ApplicationAdapter {
     private SpriteBatch batch;
@@ -63,11 +66,29 @@ public class TankGame extends ApplicationAdapter {
         Gdx.gl.glClearColor(0, 0.6f, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         batch.begin();
+        renderHUD(batch, font, roomInfo);
         player.render(batch);
         botEmitter.render(batch);
         bulletEmitter.render(batch);
-        player.renderHUD(batch, font);
         batch.end();
+    }
+
+    public void setScore(Integer id, Integer killsCount){
+        // TODO: 19.12.2020 прийти должен RoomInfo. Изменить. 
+        roomInfo.getMapUsers().put(id, killsCount);
+    }
+
+    public void renderHUD(SpriteBatch batch, BitmapFont font, RoomInfo roomInfo) {
+        int forY = 700;
+        Set<Map.Entry<Integer, Integer>> playerSet = roomInfo.getMapUsers().entrySet();
+        for (Map.Entry<Integer, Integer> player: playerSet) {
+            font.draw(batch, "User:" + player.getKey() + "   score:  " + player.getValue() ,20, forY);
+            forY -= 30;
+        }
+    }
+
+    public void addScore() {
+        application.addKill(roomInfo.getMapUsers().get(application.getID()));
     }
 
     public void update(float dt) {
@@ -94,7 +115,7 @@ public class TankGame extends ApplicationAdapter {
                             bullet.deactivate();
                             bot.takeDamage(bullet.getDamage());
                             if (!bot.isActive()) {
-                                player.addScore();
+                                addScore();
                             }
                             break;
                         }
@@ -121,10 +142,16 @@ public class TankGame extends ApplicationAdapter {
         batch.dispose();
     }
 
+
+
     public void closeGame() {
         if (Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE)) {
-            dispose();
-            application.closeGame();
+            application.closeGame(roomInfo);
+            Gdx.app.exit();
         }
+    }
+
+    public void setRoomInfo(RoomInfo roomInfo) {
+        this.roomInfo = roomInfo;
     }
 }

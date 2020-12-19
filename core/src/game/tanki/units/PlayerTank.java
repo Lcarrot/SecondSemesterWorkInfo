@@ -32,15 +32,14 @@ public class PlayerTank extends Tank {
         this.lives = 5;
     }
 
-    public void addScore() {
-        score++;
-    }
 
     @Override
     public void destroy() {
         lives--;
         hp = hpMax;
     }
+
+
 
     public void update(float dt) {
         checkMovement(dt);
@@ -50,9 +49,6 @@ public class PlayerTank extends Tank {
         super.update(dt);
     }
 
-    public void renderHUD(SpriteBatch batch, BitmapFont font) {
-        font.draw(batch, "Score:" + score, 20, 700);
-    }
 
     public void checkMovement(float dt) {
         if (Gdx.input.isKeyPressed(Input.Keys.LEFT)) {

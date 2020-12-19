@@ -10,6 +10,17 @@
     -fx-background-color: linear-gradient(#2A5058, #61a2b1);
 }
 
+
+.list-cell{
+    -fx-text-fill: #FFAA00;
+    -fx-font-family: "Book Antiqua";
+    -fx-font-size:18;
+}
+
+.list-view{
+    -fx-text-fill: #FFAA00;
+    -fx-font-family: "Book Antiqua";
+}
 .text-area{
     -fx-text-fill: #FFAA00;
     -fx-font-family: "Book Antiqua";

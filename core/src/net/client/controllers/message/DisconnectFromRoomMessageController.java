@@ -15,7 +15,7 @@ public class DisconnectFromRoomMessageController extends AbstractMessageControll
 
     @Override
     public void receive(DisconnectFromRoomMessage message) {
-        application.playerIsDisconnected(message.getClientId());
+        application.playerIsDisconnected(message.getRoomInfo());
     }
 
     @Override

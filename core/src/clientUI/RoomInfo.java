@@ -52,6 +52,6 @@ public class RoomInfo implements Serializable {
 
     @Override
     public String toString() {
-        return "name= " + name + ", roomId= " + roomId;
+        return "Name room: " + name + ", quantity users: " + mapUsers.size() + ",   capacity: " + count;
     }
 }

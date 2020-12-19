@@ -12,6 +12,8 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.TextArea;
+import javafx.scene.control.TextField;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 import javafx.stage.Stage;
@@ -69,9 +71,7 @@ public class ApplicationUI extends Application implements ClientApplication {
             game = new TankGame(this, roomInfo);
             new LwjglApplication(game, config);
         }
-        else {
-            // TODO: 12/19/2020 выдать какое то сообщение.
-        }
+
     }
 
     public void requestGame(RoomInfo roomInfo){
@@ -109,8 +109,8 @@ public class ApplicationUI extends Application implements ClientApplication {
     }
 
     public void closeApplication(){
-        stage.close();
         tcpClient.close();
+        stage.close();
     }
 
     public void hideApplication(){
@@ -158,34 +158,35 @@ public class ApplicationUI extends Application implements ClientApplication {
 
     @Override
     public void updateFrags(Integer id, Integer killsCount) {
-        // TODO: 12/19/2020 обновлять убийства у игрока с таким id
+        game.setScore(id, killsCount);
     }
 
     @Override
     public void addKill(Integer integer) {
-        tcpClient.addPlayerFrag(integer);
+        tcpClient.addPlayerFrag(integer + 1);
     }
 
     @Override
     public void addPlayer(boolean bool, RoomInfo roomInfo) {
         if (bool) {
-            // TODO: 12/19/2020   добавить игрока в табличку и начать отслеживать фраги
-        }
-        else {
-            // TODO: 12/19/2020 вывести окошко с текстом, что такое невозможно
+            game.setRoomInfo(roomInfo);
         }
     }
 
     @Override
-    public void playerIsDisconnected(Integer id) {
+    public void playerIsDisconnected(RoomInfo roomInfo) {
+        game.setRoomInfo(roomInfo);
         setScene(ScenesNames.START);
         stage.show();
-        // TODO: 12/19/2020 удалить игрока из таблицы. (должна вывзывать функцию у игрока сервер -> игрок)
+    }
+
+    public int getID(){
+        return tcpClient.getId();
     }
 
     @Override
-    public void closeGame() {
-        stage.show();
+    public void closeGame(RoomInfo roomInfo) {
+        tcpClient.disconnectFromRoom(roomInfo);
     }
 
 
