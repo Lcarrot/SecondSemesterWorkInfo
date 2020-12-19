@@ -1,6 +1,7 @@
 package clientUI;
 
 import java.io.Serializable;
+import java.util.Map;
 
 public class RoomInfo implements Serializable {
 
@@ -8,11 +9,13 @@ public class RoomInfo implements Serializable {
     private final int hostId;
     private final int count;
     private int roomId;
+    private Map mapUsers;
 
-    public RoomInfo(String name, int hostId, int count) {
+    public RoomInfo(String name, int hostId, int count, Map mapUsers) {
         this.name = name;
         this.hostId = hostId;
         this.count = count;
+        this.mapUsers = mapUsers;
     }
 
 
@@ -34,5 +37,14 @@ public class RoomInfo implements Serializable {
 
     public void setRoomId(int roomId) {
         this.roomId = roomId;
+    }
+
+    public Map getMapUsers() {
+        return mapUsers;
+    }
+
+    @Override
+    public String toString() {
+        return "name= " + name + ", roomId= " + roomId;
     }
 }

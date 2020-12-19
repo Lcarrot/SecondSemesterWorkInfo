@@ -11,11 +11,9 @@ import java.io.IOException;
 public class StartController{
     ApplicationUI parent;
 
-    private static Stage stage;
-    MediaPlayer mediaPlayer;
-
     @FXML
     private void clickCommunicate(ActionEvent event) throws IOException {
+        parent.updateListRooms();
         parent.setScene(ScenesNames.LIST_ROOM);
     }
 

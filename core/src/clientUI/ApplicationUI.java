@@ -7,6 +7,7 @@ import game.tanki.TankGame;
 import javafx.animation.RotateTransition;
 import javafx.application.Application;
 import javafx.application.Platform;
+import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -14,14 +15,17 @@ import javafx.scene.control.Button;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 import javafx.stage.Stage;
+import javafx.stage.WindowEvent;
 import javafx.util.Duration;
 import net.client.GameTCPClient;
 import net.network.message.UIMessage.ChatMessage;
+import net.server.Room;
 import net.starter.Protocol;
 
 import java.io.IOException;
 import java.net.InetAddress;
 import java.net.Socket;
+import java.util.HashMap;
 import java.util.List;
 
 public class ApplicationUI extends Application implements ClientApplication {
@@ -41,29 +45,47 @@ public class ApplicationUI extends Application implements ClientApplication {
         config = new LwjglApplicationConfiguration();
         config.width = 1280;
         config.height = 720;
-
         stage = primaryStage;
         stage.setWidth(1200);
         stage.setHeight(700);
         stage.setMinHeight(650);
         stage.setMinWidth(1000);
 
-        if ((mediaPlayer == null)) {
-            Media sound = new Media(String.valueOf(getClass().getResource("/music/menu.mp3")));
-            mediaPlayer = new MediaPlayer(sound);
-            mediaPlayer.setAutoPlay(true);
-            mediaPlayer.setCycleCount(-1);
-        }
+//        if ((mediaPlayer == null)) {
+//            Media sound = new Media(String.valueOf(getClass().getResource("/music/menu.mp3")));
+//            mediaPlayer = new MediaPlayer(sound);
+//            mediaPlayer.setAutoPlay(true);
+//            mediaPlayer.setCycleCount(-1);
+//        }
 
         tcpClient = new GameTCPClient(new Socket(InetAddress.getLocalHost(), Protocol.PORT), this);
-
         setScene(ScenesNames.START);
         stage.show();
     }
 
     public void startGame(){
-        new LwjglApplication(new TankGame(this), config);
+        HashMap hashMap = new HashMap();
+        hashMap.put(tcpClient.getId(), 0);
+        game = new TankGame(this, hashMap);
+        new LwjglApplication(game, config);
         stage.hide();
+    }
+
+
+    // TODO: 19.12.2020 вызывается при вступлении в игру tcpclient'ом 
+    public void joinGame(RoomInfo roomInfo){
+        game = new TankGame(this, roomInfo.getMapUsers());
+        new LwjglApplication(game, config);
+        stage.hide();
+    }
+
+    // TODO: 19.12.2020 вызывается метод у tcpclient на запрос вступления в комнату 
+    public void requestGame(RoomInfo roomInfo){
+
+    }
+
+    public GameTCPClient getTcpClient() {
+        return tcpClient;
     }
 
     @Override
@@ -75,6 +97,7 @@ public class ApplicationUI extends Application implements ClientApplication {
     public void receivedUpdateListRooms(List<RoomInfo> roomInfos) {
         listRoomsController.receivedUpdateListRooms(roomInfos);
     }
+
 
     @Override
     public void sendMessage(String message) {
@@ -116,7 +139,9 @@ public class ApplicationUI extends Application implements ClientApplication {
                     listRoomsController.setParent(this);
                     break;
             }
+
             stage.setScene(new Scene(root));
+
 
         }
         catch (IOException exception){
@@ -164,14 +189,13 @@ public class ApplicationUI extends Application implements ClientApplication {
 
     @Override
     public void closeGame() {
-        Platform.runLater(new Runnable() {
-            @Override
-            public void run() {
-                setScene(ScenesNames.START);
-                stage.show();
-            }
-        });
+
+
+        stage.show();
+
+
     }
+
 
     public static void main(String[] args) {
         Application.launch();

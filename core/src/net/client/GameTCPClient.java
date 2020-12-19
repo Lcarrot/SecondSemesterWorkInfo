@@ -85,7 +85,7 @@ public class GameTCPClient extends TCPClient {
 
     @Override
     public void send(TCPMessage message) {
-        tcpReceiverMessage.handleMessage(message);
+        connection.send(message);
     }
 
     private class TCPReceiverMessage {

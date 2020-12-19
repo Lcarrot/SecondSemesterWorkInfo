@@ -14,6 +14,9 @@ import game.tanki.units.BotTank;
 import game.tanki.units.PlayerTank;
 import game.tanki.units.Tank;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public class TankGame extends ApplicationAdapter {
     private SpriteBatch batch;
     private PlayerTank player;
@@ -21,12 +24,14 @@ public class TankGame extends ApplicationAdapter {
     private BotEmitter botEmitter;
     private float gameTimer;
     private ClientApplicationJDX application;
+    private Map mapUsers;
     private static final boolean FRIENDLY_FIRE = false;
-
     public TankGame(){}
 
-    public TankGame(ClientApplicationJDX application) {
+
+    public TankGame(ClientApplicationJDX application, Map mapUsers) {
         this.application = application;
+        this.mapUsers = mapUsers;
     }
 
     public PlayerTank getPlayer() {
@@ -110,8 +115,8 @@ public class TankGame extends ApplicationAdapter {
 
     public void closeGame() {
         if (Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE)) {
-            dispose();
-            application.closeGame();
+            Gdx.app.exit();
+
         }
     }
 }

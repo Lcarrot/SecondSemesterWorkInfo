@@ -3,12 +3,12 @@ package clientUI.controllers;
 import clientUI.ApplicationUI;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
-import javafx.scene.control.ListView;
-import javafx.scene.control.TextArea;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
+import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
+import javafx.util.Callback;
 import net.client.controllers.message.ChatMessageController;
 import net.network.message.UIMessage.ChatMessage;
 import net.server.Room;
@@ -20,7 +20,6 @@ public class ListRoomsController {
 
     private ApplicationUI parent;
 
-    private static Stage stage;
     @FXML
     Button buttonInputMessage;
     @FXML
@@ -32,9 +31,6 @@ public class ListRoomsController {
     @FXML
     TextField textFieldMessage;
 
-    ChatMessageController client;
-
-    private List<Room> listObjectRoom;
 
 
     @FXML
@@ -55,13 +51,19 @@ public class ListRoomsController {
 
     @FXML
     private void updateListRooms(ActionEvent event){
-        receivedUpdateListRooms(null);
+        parent.updateListRooms();
     }
 
     public void receivedUpdateListRooms(List<RoomInfo> rooms){
-        if (rooms != null) {
-            listRoom.setItems(FXCollections.observableList(rooms));
-        }
+        listRoom.setItems(FXCollections.observableList(rooms));
+        listRoom.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                RoomInfo room = listRoom.getSelectionModel().getSelectedItem();
+                parent.requestGame(room);
+            }
+        });
+
     }
 
     public void receivedMessage(ChatMessage chatMessage){

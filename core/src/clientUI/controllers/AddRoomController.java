@@ -7,9 +7,10 @@ import javafx.fxml.FXML;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 
+import java.util.HashMap;
+
 public class AddRoomController {
     private ApplicationUI parent;
-    private static Stage stage;;
 
     @FXML
     private TextField textFieldName;
@@ -26,6 +27,10 @@ public class AddRoomController {
 
     @FXML
     private void addRoom(ActionEvent event) {
+        HashMap hashMap = new HashMap();
+        hashMap.put(parent.getTcpClient().getId(), 0);
+        room = new RoomInfo(textFieldName.getText(), parent.getTcpClient().getId(),
+                Integer.parseInt (textFieldQuantity.getText()), hashMap);
         parent.addRoom(room);
         parent.startGame();
     }
