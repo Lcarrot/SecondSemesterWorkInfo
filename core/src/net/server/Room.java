@@ -6,6 +6,7 @@ import net.network.message.UIMessage.CreateRoomMessage;
 
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Optional;
 
 public class Room {
 
@@ -54,5 +55,9 @@ public class Room {
 
     public List<TCPConnection> getConnections() {
         return connections;
+    }
+
+    public void setKills(Integer id, Integer kills) {
+        roomInfo.getMapUsers().put(id, kills);
     }
 }

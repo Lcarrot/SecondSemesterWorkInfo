@@ -11,6 +11,7 @@ import java.net.Socket;
 import java.util.*;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ThreadPoolExecutor;
+import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Collectors;
 
 public class TCPServer extends Server<TCPConnection, TCPMessage> {
@@ -75,8 +76,7 @@ public class TCPServer extends Server<TCPConnection, TCPMessage> {
         private void handleMessage(TCPMessage message) {
             if (message instanceof CloseConnectionMessage) {
                 getConnectionById(((CloseConnectionMessage) message).getClientId()).ifPresent(TCPServer.this::closeConnection);
-            }
-            else if (message instanceof CreateRoomMessage) {
+            } else if (message instanceof CreateRoomMessage) {
                 Room room = new Room(next_room_id++, (CreateRoomMessage) message);
                 gameRoomSet.add(room);
                 getConnectionById(((CreateRoomMessage) message).getClientId()).ifPresent(connection -> {
@@ -84,40 +84,50 @@ public class TCPServer extends Server<TCPConnection, TCPMessage> {
                     ((CreateRoomMessage) message).setRoomInfo(room.getRoomInfo());
                     connection.send(message);
                 });
-            }
-            else if (message instanceof ChatMessage) {
+            } else if (message instanceof ChatMessage) {
                 broadcastSendMessage(connections, message);
-            }
-            else if (message instanceof UpdateListRoomMessage) {
+            } else if (message instanceof UpdateListRoomMessage) {
                 ((UpdateListRoomMessage) message).setRooms(gameRoomSet.stream().map(Room::getRoomInfo).collect(Collectors.toList()));
                 getConnectionById(((UpdateListRoomMessage) message).getClientId()).ifPresent(
                         connection -> {
                             ((UpdateListRoomMessage) message).setRooms(gameRoomSet.stream().map(Room::getRoomInfo).collect(Collectors.toList()));
                             connection.send(message);
                         });
-            }
-            else if (message instanceof DoFragMessage) {
+            } else if (message instanceof DoFragMessage) {
                 getRoomById(((DoFragMessage) message).getRoomId()).ifPresent(
-                        room -> broadcastSendMessage(room.getConnections(), message));
-            }
-            else if (message instanceof ConnectToRoomMessage) {
+                        room -> {
+                            room.setKills(((DoFragMessage) message).getId(), ((DoFragMessage) message).getKills());
+                            broadcastSendMessage(room.getConnections(), message);
+                        });
+            } else if (message instanceof ConnectToRoomMessage) {
+                ((ConnectToRoomMessage) message).setStatus(false);
+                AtomicReference<TCPConnection> currentConnection = new AtomicReference<>();
                 getRoomById(((ConnectToRoomMessage) message).getRoomInfo().getRoomId()).ifPresent
                         (room -> getConnectionById(((ConnectToRoomMessage) message).getClientId()).ifPresent
                                 (connection -> {
+                                    System.out.println(room.getRoomInfo());
                                     ((ConnectToRoomMessage) message).setStatus(room.connect(connection));
                                     ((ConnectToRoomMessage) message).setRoomInfo(room.getRoomInfo());
-                                    connection.send(message);
+                                    currentConnection.set(connection);
                                 }));
-            }
-            else if (message instanceof DisconnectFromRoomMessage) {
+                if (currentConnection.get() != null) {
+                    currentConnection.get().send(message);
+                } else {
+                    System.out.println("I'm here");
+                    getConnectionById(((ConnectToRoomMessage) message).getClientId()).ifPresent(connection -> connection.send(message));
+                }
+            } else if (message instanceof DisconnectFromRoomMessage) {
                 getRoomById(((DisconnectFromRoomMessage) message).getRoomInfo().getRoomId())
                         .ifPresent(room -> getConnectionById(((DisconnectFromRoomMessage) message).getClientId())
                                 .ifPresent(connection -> {
                                     if (room.disconnect(connection)) {
                                         ((DisconnectFromRoomMessage) message).setRoomInfo(room.getRoomInfo());
                                         List<TCPConnection> connections = room.getConnections();
-                                        if (connections.size() != 0) broadcastSendMessage(connections, message);
-                                        else gameRoomSet.remove(room);
+                                        if (connections.size() > 0) {
+                                            broadcastSendMessage(connections, message);
+                                        } else {
+                                            gameRoomSet.remove(room);
+                                        }
                                     }
                                 }));
             }

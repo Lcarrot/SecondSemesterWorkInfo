@@ -15,12 +15,16 @@ public class ConnectToRoomMessageController extends AbstractMessageController<Co
     public void receive(ConnectToRoomMessage message) {
         if (message.isStatus()) {
             client.setNewRoom(message.getRoomInfo());
-        }
-        if (message.getClientId() == client.getId()) {
-            application.joinGame(message.isStatus(), message.getRoomInfo());
+            if (message.getClientId() == client.getId()) {
+                application.hideApplication();
+                application.joinGame(message.isStatus(), message.getRoomInfo());
+            }
+            else {
+                application.addPlayer(message.isStatus(), message.getRoomInfo());
+            }
         }
         else {
-            application.addPlayer(message.isStatus(), message.getRoomInfo());
+            client.updateListOfRooms();
         }
     }
 

@@ -40,7 +40,7 @@ public class ApplicationUI extends Application implements ClientApplication {
     private TankGame game;
     private LwjglApplicationConfiguration config;
 
-    // TODO: 12/19/2020 метод для запуска игры, tcpClient будет его вызывать, если удалось настроить подключение.
+
 
     @Override
     public void start(Stage primaryStage) throws Exception {
@@ -53,12 +53,12 @@ public class ApplicationUI extends Application implements ClientApplication {
         stage.setMinHeight(650);
         stage.setMinWidth(1000);
 
-//        if ((mediaPlayer == null)) {
-//            Media sound = new Media(String.valueOf(getClass().getResource("/music/menu.mp3")));
-//            mediaPlayer = new MediaPlayer(sound);
-//            mediaPlayer.setAutoPlay(true);
-//            mediaPlayer.setCycleCount(-1);
-//        }
+        if ((mediaPlayer == null)) {
+            Media sound = new Media(String.valueOf(getClass().getResource("/music/menu.mp3")));
+            mediaPlayer = new MediaPlayer(sound);
+            mediaPlayer.setAutoPlay(true);
+            mediaPlayer.setCycleCount(-1);
+        }
 
         tcpClient = new GameTCPClient(new Socket(InetAddress.getLocalHost(), Protocol.PORT), this);
         setScene(ScenesNames.START);
@@ -89,7 +89,9 @@ public class ApplicationUI extends Application implements ClientApplication {
 
     @Override
     public void receivedUpdateListRooms(List<RoomInfo> roomInfos) {
-        listRoomsController.receivedUpdateListRooms(roomInfos);
+        if (roomInfos != null) {
+            listRoomsController.receivedUpdateListRooms(roomInfos);
+        }
     }
 
 
@@ -187,6 +189,8 @@ public class ApplicationUI extends Application implements ClientApplication {
     @Override
     public void closeGame(RoomInfo roomInfo) {
         tcpClient.disconnectFromRoom(roomInfo);
+
+        tcpClient.close();
     }
 
 

@@ -5,6 +5,7 @@ import clientUI.RoomInfo;
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
+import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -30,6 +31,7 @@ public class TankGame extends ApplicationAdapter {
     private ClientApplicationJDX application;
     private RoomInfo roomInfo;
     private static final boolean FRIENDLY_FIRE = false;
+    private Music sound;
 
     public TankGame() {
     }
@@ -57,6 +59,9 @@ public class TankGame extends ApplicationAdapter {
         bulletEmitter = new BulletEmitter(atlas);
         botEmitter = new BotEmitter(this, atlas);
         botEmitter.activate(MathUtils.random(0, Gdx.graphics.getWidth()), MathUtils.random(0, Gdx.graphics.getHeight()));
+        sound = Gdx.audio.newMusic(Gdx.files.internal
+                ("C:/Users/olga1/Desktop/projects/SecondSemesterWork/core/build/resources/main/music/game.mp3"));
+        sound.play();
     }
 
     @Override
@@ -73,7 +78,7 @@ public class TankGame extends ApplicationAdapter {
         batch.end();
     }
 
-    public void setScore(Integer id, Integer killsCount){
+    public void setScore(Integer id, Integer killsCount) {
         // TODO: 19.12.2020 прийти должен RoomInfo. Изменить. 
         roomInfo.getMapUsers().put(id, killsCount);
     }
@@ -81,8 +86,8 @@ public class TankGame extends ApplicationAdapter {
     public void renderHUD(SpriteBatch batch, BitmapFont font, RoomInfo roomInfo) {
         int forY = 700;
         Set<Map.Entry<Integer, Integer>> playerSet = roomInfo.getMapUsers().entrySet();
-        for (Map.Entry<Integer, Integer> player: playerSet) {
-            font.draw(batch, "User:" + player.getKey() + "   score:  " + player.getValue() ,20, forY);
+        for (Map.Entry<Integer, Integer> player : playerSet) {
+            font.draw(batch, "User:" + player.getKey() + "   score:  " + player.getValue(), 20, forY);
             forY -= 30;
         }
     }
@@ -143,9 +148,9 @@ public class TankGame extends ApplicationAdapter {
     }
 
 
-
     public void closeGame() {
         if (Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE)) {
+            sound.stop();
             application.closeGame(roomInfo);
             Gdx.app.exit();
         }

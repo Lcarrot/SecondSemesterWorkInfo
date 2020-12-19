@@ -61,7 +61,6 @@ public class ListRoomsController {
             public void handle(MouseEvent event) {
                 RoomInfo room = listRoom.getSelectionModel().getSelectedItem();
                 if (room != null) {
-                    parent.hideApplication();
                     parent.requestGame(room);
                 }
             }
