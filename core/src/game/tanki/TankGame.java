@@ -79,7 +79,6 @@ public class TankGame extends ApplicationAdapter {
     }
 
     public void setScore(Integer id, Integer killsCount) {
-        // TODO: 19.12.2020 прийти должен RoomInfo. Изменить. 
         roomInfo.getMapUsers().put(id, killsCount);
     }
 
@@ -92,9 +91,11 @@ public class TankGame extends ApplicationAdapter {
         }
     }
 
-    public void addScore() {
-        application.addKill(roomInfo.getMapUsers().get(application.getID()));
+    public void addScore(int i) {
+        application.addKill(roomInfo.getMapUsers().get(application.getID()) + i);
     }
+
+    public void removeScore(int i){application.addKill(roomInfo.getMapUsers().get(application.getID()) - i);}
 
     public void update(float dt) {
         gameTimer += dt;
@@ -120,7 +121,7 @@ public class TankGame extends ApplicationAdapter {
                             bullet.deactivate();
                             bot.takeDamage(bullet.getDamage());
                             if (!bot.isActive()) {
-                                addScore();
+                                addScore(1);
                             }
                             break;
                         }

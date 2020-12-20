@@ -25,6 +25,10 @@ public abstract class Tank {
     int width;
     int height;
 
+    public int getHp() {
+        return hp;
+    }
+
     public Vector2 getPosition() {
         return position;
     }
@@ -52,12 +56,7 @@ public abstract class Tank {
         }
     }
 
-    public void takeDamage(int damage) {
-        hp -= damage;
-        if (hp <= 0) {
-            destroy();
-        }
-    }
+    public abstract void takeDamage(int damage);
 
     public abstract void destroy();
 

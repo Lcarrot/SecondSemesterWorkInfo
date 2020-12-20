@@ -114,8 +114,8 @@ public class ApplicationUI extends Application implements ClientApplication {
     }
 
     @Override
-    public void addKill(Integer integer) {
-        tcpClient.addPlayerFrag(integer + 1);
+    public void addKill(Integer killsCount) {
+        tcpClient.addPlayerFrag(killsCount);
     }
 
     @Override
@@ -136,7 +136,6 @@ public class ApplicationUI extends Application implements ClientApplication {
     @Override
     public void closeGame(RoomInfo roomInfo) {
         tcpClient.disconnectFromRoom(roomInfo);
-
         tcpClient.close();
     }
 

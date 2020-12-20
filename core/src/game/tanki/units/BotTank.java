@@ -49,6 +49,14 @@ public class BotTank extends Tank {
     }
 
     @Override
+    public void takeDamage(int damage) {
+        hp -= damage;
+        if (hp <= 0) {
+            destroy();
+        }
+    }
+
+    @Override
     public void destroy() {
         active = false;
     }

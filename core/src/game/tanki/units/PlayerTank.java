@@ -32,6 +32,14 @@ public class PlayerTank extends Tank {
         this.lives = 5;
     }
 
+    @Override
+    public void takeDamage(int damage) {
+        hp -= damage;
+        if (hp <= 0) {
+            destroy();
+            game.removeScore(5);
+        }
+    }
 
     @Override
     public void destroy() {
