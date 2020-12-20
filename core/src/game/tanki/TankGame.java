@@ -2,6 +2,7 @@ package game.tanki;
 
 import clientUI.ClientApplicationJDX;
 import clientUI.RoomInfo;
+import clientUI.controllers.NamesConstants;
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
@@ -52,15 +53,14 @@ public class TankGame extends ApplicationAdapter {
 
     @Override
     public void create() {
-        TextureAtlas atlas = new TextureAtlas("game.pack");
-        font = new BitmapFont(Gdx.files.internal("font24.fnt"));
+        TextureAtlas atlas = new TextureAtlas(NamesConstants.TEXTURE_GAME.getName());
+        font = new BitmapFont(Gdx.files.internal(NamesConstants.BITMAP_GAME.getName()));
         batch = new SpriteBatch();
         player = new PlayerTank(this, atlas);
         bulletEmitter = new BulletEmitter(atlas);
         botEmitter = new BotEmitter(this, atlas);
         botEmitter.activate(MathUtils.random(0, Gdx.graphics.getWidth()), MathUtils.random(0, Gdx.graphics.getHeight()));
-        sound = Gdx.audio.newMusic(Gdx.files.internal
-                ("C:/Users/olga1/Desktop/projects/SecondSemesterWork/core/build/resources/main/music/game.mp3"));
+        sound = Gdx.audio.newMusic(Gdx.files.internal(NamesConstants.MUSIC_GAME.getName()));
         sound.play();
     }
 

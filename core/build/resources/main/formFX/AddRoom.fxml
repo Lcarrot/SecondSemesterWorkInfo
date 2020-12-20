@@ -1,11 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.FlowPane?>
+<?import javafx.scene.text.Font?>
 
 <FlowPane alignment="CENTER" columnHalignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" orientation="VERTICAL" prefHeight="430.0" prefWidth="722.0" style="-fx-background-color:linear-gradient(#a40106, #00d4ff);" stylesheets="@../css/designSaber.css" vgap="20.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="clientUI.controllers.AddRoomController">
    <children>
+      <Label fx:id="timer" alignment="CENTER" prefHeight="87.0" prefWidth="205.0" textAlignment="CENTER" textFill="#fcd600">
+         <font>
+            <Font name="Cambria Bold" size="36.0" />
+         </font></Label>
       <TextField fx:id="textFieldName" prefHeight="40.0" prefWidth="328.0" promptText="Название" />
       <TextField fx:id="textFieldQuantity" prefHeight="40.0" promptText="Количество" />
       <FlowPane alignment="CENTER" columnHalignment="CENTER" hgap="20.0" prefHeight="54.0" prefWidth="172.0">

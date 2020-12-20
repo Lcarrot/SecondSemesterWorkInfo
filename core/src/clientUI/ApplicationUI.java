@@ -6,28 +6,23 @@ import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration;
 import game.tanki.TankGame;
 import javafx.animation.RotateTransition;
 import javafx.application.Application;
-import javafx.application.Platform;
-import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
-import javafx.scene.control.TextArea;
-import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 import javafx.stage.Stage;
-import javafx.stage.WindowEvent;
 import javafx.util.Duration;
 import net.client.GameTCPClient;
 import net.network.message.UIMessage.ChatMessage;
-import net.server.Room;
 import net.starter.Protocol;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.net.InetAddress;
 import java.net.Socket;
-import java.util.HashMap;
 import java.util.List;
 
 public class ApplicationUI extends Application implements ClientApplication {
@@ -48,13 +43,17 @@ public class ApplicationUI extends Application implements ClientApplication {
         config.width = 1280;
         config.height = 720;
         stage = primaryStage;
+        stage.setTitle(NamesConstants.TITLE_NAMES.getName());
+        InputStream iconStream = getClass().getResourceAsStream(NamesConstants.TITLE_IMG.getName());
+        Image image = new Image(iconStream);
+        stage.getIcons().add(image);
         stage.setWidth(1200);
         stage.setHeight(700);
         stage.setMinHeight(650);
         stage.setMinWidth(1000);
 
         if ((mediaPlayer == null)) {
-            Media sound = new Media(String.valueOf(getClass().getResource("/music/menu.mp3")));
+            Media sound = new Media(String.valueOf(getClass().getResource(NamesConstants.MUSIC_MENU.getName())));
             mediaPlayer = new MediaPlayer(sound);
             mediaPlayer.setAutoPlay(true);
             mediaPlayer.setCycleCount(-1);
@@ -65,7 +64,7 @@ public class ApplicationUI extends Application implements ClientApplication {
         stage.show();
     }
 
-
+    @Override
     public void joinGame(Boolean booleanJoin, RoomInfo roomInfo){
         if (booleanJoin) {
             game = new TankGame(this, roomInfo);
@@ -74,13 +73,6 @@ public class ApplicationUI extends Application implements ClientApplication {
 
     }
 
-    public void requestGame(RoomInfo roomInfo){
-        tcpClient.connectToRoom(roomInfo);
-    }
-
-    public GameTCPClient getTcpClient() {
-        return tcpClient;
-    }
 
     @Override
     public void receivedMessage(ChatMessage chatMessage) {
@@ -115,10 +107,38 @@ public class ApplicationUI extends Application implements ClientApplication {
         stage.close();
     }
 
-    public void hideApplication(){
-        stage.hide();
+
+    @Override
+    public void updateFrags(Integer id, Integer killsCount) {
+        game.setScore(id, killsCount);
     }
 
+    @Override
+    public void addKill(Integer integer) {
+        tcpClient.addPlayerFrag(integer + 1);
+    }
+
+    @Override
+    public void addPlayer(boolean bool, RoomInfo roomInfo) {
+        if (bool) {
+            game.setRoomInfo(roomInfo);
+        }
+    }
+
+    @Override
+    public void playerIsDisconnected(RoomInfo roomInfo) {
+        game.setRoomInfo(roomInfo);
+        setScene(ScenesNames.START);
+        stage.show();
+    }
+
+
+    @Override
+    public void closeGame(RoomInfo roomInfo) {
+        tcpClient.disconnectFromRoom(roomInfo);
+
+        tcpClient.close();
+    }
 
     @Override
     public void setScene(ScenesNames scene){
@@ -157,40 +177,20 @@ public class ApplicationUI extends Application implements ClientApplication {
         rotateTransition.play();
     }
 
-
-    @Override
-    public void updateFrags(Integer id, Integer killsCount) {
-        game.setScore(id, killsCount);
-    }
-
-    @Override
-    public void addKill(Integer integer) {
-        tcpClient.addPlayerFrag(integer + 1);
-    }
-
-    @Override
-    public void addPlayer(boolean bool, RoomInfo roomInfo) {
-        if (bool) {
-            game.setRoomInfo(roomInfo);
-        }
-    }
-
-    @Override
-    public void playerIsDisconnected(RoomInfo roomInfo) {
-        game.setRoomInfo(roomInfo);
-        setScene(ScenesNames.START);
-        stage.show();
+    public void hideApplication(){
+        stage.hide();
     }
 
     public int getID(){
         return tcpClient.getId();
     }
 
-    @Override
-    public void closeGame(RoomInfo roomInfo) {
-        tcpClient.disconnectFromRoom(roomInfo);
+    public void requestGame(RoomInfo roomInfo){
+        tcpClient.connectToRoom(roomInfo);
+    }
 
-        tcpClient.close();
+    public GameTCPClient getTcpClient() {
+        return tcpClient;
     }
 
 

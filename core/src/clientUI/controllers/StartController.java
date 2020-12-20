@@ -3,13 +3,11 @@ package clientUI.controllers;
 import clientUI.ApplicationUI;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.media.MediaPlayer;
-import javafx.stage.Stage;
 
 import java.io.IOException;
 
 public class StartController{
-    ApplicationUI parent;
+    private ApplicationUI parent;
 
     @FXML
     private void clickCommunicate(ActionEvent event) throws IOException {

@@ -1,35 +1,33 @@
 package clientUI.controllers;
 
 import clientUI.ApplicationUI;
+import clientUI.RoomInfo;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
-import javafx.scene.control.*;
-import javafx.scene.input.MouseEvent;
-import javafx.stage.Stage;
-import javafx.util.Callback;
-import net.client.controllers.message.ChatMessageController;
+import javafx.scene.control.Button;
+import javafx.scene.control.ListView;
+import javafx.scene.control.TextArea;
+import javafx.scene.control.TextField;
 import net.network.message.UIMessage.ChatMessage;
-import net.server.Room;
-import clientUI.RoomInfo;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public class ListRoomsController {
 
     private ApplicationUI parent;
 
     @FXML
-    Button buttonInputMessage;
+    private Button buttonInputMessage;
     @FXML
-    Button buttonUpdateListRooms;
+    private ListView<RoomInfo> listRoom;
     @FXML
-    ListView<RoomInfo> listRoom;
+    private TextArea textAreaMessages;
     @FXML
-    TextArea textAreaMessages;
-    @FXML
-    TextField textFieldMessage;
+    private TextField textFieldMessage;
+
+    private static List<String> history = new ArrayList<>();
 
 
 
@@ -56,13 +54,10 @@ public class ListRoomsController {
 
     public void receivedUpdateListRooms(List<RoomInfo> rooms){
         listRoom.setItems(FXCollections.observableList(rooms));
-        listRoom.setOnMouseClicked(new EventHandler<MouseEvent>() {
-            @Override
-            public void handle(MouseEvent event) {
-                RoomInfo room = listRoom.getSelectionModel().getSelectedItem();
-                if (room != null) {
-                    parent.requestGame(room);
-                }
+        listRoom.setOnMouseClicked(event -> {
+            RoomInfo room = listRoom.getSelectionModel().getSelectedItem();
+            if (room != null) {
+                parent.requestGame(room);
             }
         });
 
@@ -70,9 +65,13 @@ public class ListRoomsController {
 
     public void receivedMessage(ChatMessage chatMessage){
         textAreaMessages.appendText("User " + chatMessage.getClientId() + ": " + chatMessage.getMessage() + "\n");
+        history.add("User " + chatMessage.getClientId() + ": " + chatMessage.getMessage());
     }
 
     public void setParent(ApplicationUI parent) {
+        for (String message: history) {
+            textAreaMessages.appendText(message + "\n");
+        }
         this.parent = parent;
     }
 }
